@@ -4,7 +4,7 @@
         <div style="width: 10%;float: left;text-align: left">
           <img src="../../assets/logo.png" style="width: 100px">
         </div>
-        <div style="width: 50%;float: left;padding-top: 60px;text-align: left">
+        <div style="float: left;padding-top: 60px;text-align: left">
           <ButtonGroup>
             <Button style="display: none"></Button>
             <Button :class="getClass(1)" icon="md-home" @click="getPage(1)">论坛主页</Button>
