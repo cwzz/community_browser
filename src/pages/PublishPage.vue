@@ -1,15 +1,15 @@
 <template>
     <div style="background-color: #FFFFFF;padding: 10px">
       <Menu ref="menu"></Menu>
-      <i-form v-ref:form-validate :model="formValidate" :rules="ruleValidate" :label-width="80">
+      <i-form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
         <Form-item label="文章标题" prop="title" style="width: 50%">
-          <i-input :value.sync="formValidate.title" placeholder="请输入文章标题"></i-input>
+          <i-input v-model="formValidate.title" placeholder="请输入文章标题"></i-input>
         </Form-item>
         <Form-item label="文章简介" prop="description" style="width: 50%;">
-          <i-input :value.sync="formValidate.description" placeholder="请输入文章简介"></i-input>
+          <i-input v-model="formValidate.description" placeholder="请输入文章简介"></i-input>
         </Form-item>
         <Form-item label="文章标签" prop="tag">
-          <Cascader :data="tags" :value.sync="formValidate.tag" trigger="hover" style="width: 25%"></Cascader>
+          <Cascader :data="tags" v-model="formValidate.tag" trigger="hover" style="width: 25%"></Cascader>
         </Form-item>
         <div id="editor" style="margin-bottom: 15px">
           <mavon-editor style="height: 100%"></mavon-editor>
