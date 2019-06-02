@@ -5,6 +5,7 @@ import DetailPage from '@/pages/DetailPage'
 import HomePage from '@/pages/HomePage'
 import PublishPage from '@/pages/PublishPage'
 import UserPage from '@/pages/UserPage'
+import TestForm from '@/pages/TestForm'
 
 Vue.use(Router)
 
@@ -36,5 +37,10 @@ export default new Router({
       name: 'UserPage',
       component: UserPage
     },
+    {
+      path:'/test',
+      name:'TestForm',
+      component:TestForm
+    }
   ]
 })
