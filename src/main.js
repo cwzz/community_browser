@@ -8,7 +8,8 @@ import 'iview/dist/styles/iview.css'
 import axios from 'axios'
 import ElementUI from 'element-ui';     //引入element库
 import 'element-ui/lib/theme-chalk/index.css';        //引入element的css
-import $ from 'jquery'
+import $ from 'jquery';
+import './assets/iconfont/iconfont.css';
 
 Vue.prototype.$axios = axios
 axios.defaults.withCredentials = false
