@@ -48,7 +48,7 @@
               <Icon custom="iconfont i-icon-law icon"></Icon>
             </Col>
             <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="tag in tags" @click="chooseArticle(tag)">{{tag}}<br></Tag>
+              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}<br></Tag>
             </Col>
           </Row>
         </Card>
@@ -62,7 +62,7 @@
               <Icon custom="iconfont i-icon-eco icon"></Icon>
             </Col>
             <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="tag in tags" @click="chooseArticle(tag)">{{tag}}</Tag>
+              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
             </Col>
           </Row>
         </Card>
@@ -76,7 +76,7 @@
               <Icon custom="iconfont i-icon-patent icon"></Icon>
             </Col>
             <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="tag in tags" @click="chooseArticle(tag)">{{tag}}</Tag>
+              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
             </Col>
           </Row>
         </Card>
@@ -90,7 +90,7 @@
               <Icon custom="iconfont i-icon-other icon"></Icon>
             </Col>
             <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="tag in tags" @click="chooseArticle(tag)">{{tag}}</Tag>
+              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
             </Col>
           </Row>
         </Card>
