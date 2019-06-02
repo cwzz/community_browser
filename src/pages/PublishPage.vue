@@ -15,7 +15,7 @@
           <mavon-editor style="height: 100%"></mavon-editor>
         </div>
         <Form-item>
-          <i-button type="primary" style="position: relative;left: -64px;" @click="handleSubmit('formValidate')">发布帖子</i-button>
+          <i-button type="primary" icon="ios-cloud-upload" style="position: relative;left: -64px;" @click="handleSubmit('formValidate')">发布帖子</i-button>
         </Form-item>
       </i-form>
     </div>

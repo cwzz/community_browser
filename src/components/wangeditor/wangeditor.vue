@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <div ref="toolbar" class="toolbar"></div>
+    <div ref="toolbar" class="toolbar" style="display: none"></div>
     <div ref="editor" class="text"></div>
   </div>
 </template>
@@ -37,4 +37,15 @@
 </script>
 
 <style scoped>
+  /*.editor{*/
+    /*width: 80%;*/
+    /*margin: 0 auto;*/
+  /*}*/
+  /*.toolbar{*/
+    /*border: 1px solid #ccc;*/
+  /*}*/
+  /*.text{*/
+    /*border:1px solid #ccc;*/
+    /*height: 150px;*/
+  /*}*/
 </style>
