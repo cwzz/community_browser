@@ -2,8 +2,8 @@
   <div style="background-color: #FFFFFF;padding: 10px">
 
     <div id="info" style="width: 240px;height: 180px;padding: 20px; margin-bottom:10px;background-color: rgb(249,249,249)">
-      <img src="../assets/telephone.png" style="width: 80px;height: 80px;">
-      <span style="vertical-align: top;font-size: 18px;position: absolute;width: 100px;padding-top: 6px;margin-left: 17px" >钟洁爸爸</span>
+      <img src="../assets/elephant.png" style="width: 80px;height: 80px;">
+      <span style="vertical-align: top;font-size: 18px;font-weight:bold;position: absolute;width: 100px;padding-top: 6px;margin-left: 17px" >钟洁爸爸</span>
       <br>
       <div style="margin-top: 10px">
         <span class="fans">关注</span>
@@ -11,9 +11,9 @@
         <span class="fans">粉丝</span>
       </div>
       <div>
-        <span class="num">20</span>
-        <span class="num">20</span>
-        <span class="num">20</span>
+        <span class="num" @click="getTest(3)">20</span>
+        <span class="num" @click="getTest(2)">20</span>
+        <span class="num" @click="getTest(4)">20</span>
       </div>
 
     </div>

@@ -8,6 +8,8 @@
         </Sider>
         <Layout>
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
+            <span style="font-size: 18px;font-weight: bold;position: absolute">我发布的</span>
+            <Divider style="margin-top: 35px"/>
             <table style="width: 100%" id="article_title">
               <tr style="width: 100%">
                 <th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>
