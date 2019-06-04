@@ -18,7 +18,7 @@
 
     </div>
     <div style="width: 240px">
-      <Menu :theme="theme3" active-name="1">
+      <Menu :theme="theme3" >
         <MenuItem name="1" @click.native="getTest(1)">
           <Icon type="ios-paper-plane"/>
           我发布的
