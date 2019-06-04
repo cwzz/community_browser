@@ -48,7 +48,7 @@
             this.$router.push('/publish')
           }
           else if(i==4){
-            this.$router.push('/user')
+            this.$router.push('/user/publish')
           }
         }
       }
