@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #FFFFFF;padding: 10px">
       <Menu ref="menu"></Menu>
-      <i-form v-ref:form-validate :model="formValidate" :rules="ruleValidate" :label-width="80">
+      <i-form :model="formValidate" :rules="ruleValidate" :label-width="80">
         <Form-item label="文章标题" prop="title" style="width: 50%">
           <i-input :value.sync="formValidate.title" placeholder="请输入文章标题"></i-input>
         </Form-item>
