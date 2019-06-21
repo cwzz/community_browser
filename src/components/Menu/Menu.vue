@@ -14,6 +14,11 @@
             <Button style="display: none"></Button>
           </ButtonGroup>
         </div>
+        <Avatar v-if="login" :src=avatar_url style="margin-top: 65px;float: right;margin-right: 50px" />
+        <div v-else style="float: right;padding-top: 70px;">
+          <button class="login" @click="askForFrame('login')">登录</button>
+          <button class="login" @click="askForFrame('register')">注册</button>
+        </div>
       </div>
       <div style="width: 100%;height: 5px;background-color: #e64919;margin-bottom: 10px"></div>
     </div>
@@ -23,9 +28,24 @@
 
     export default {
         name: "Menu",
+      mounted(){
+        var username=sessionStorage.getItem("username")
+        console.log(username+" in method")
+        if(username==null){
+          this.login=false
+        }
+        else{
+          this.username=username
+          this.login=true
+          //同时设置头像
+        }
+      },
       data(){
         return{
-          active_index:1
+          username:'',
+          active_index:1,
+          avatar_url:'https://i.loli.net/2017/08/21/599a521472424.jpg',
+          login:''
         }
       },
       methods:{
@@ -45,13 +65,39 @@
             this.$router.push('/articles')
           }
           else if(i==3){
-            this.$router.push('/publish')
+            if(this.login){
+              this.$router.push('/publish')
+            }
+            else{
+              this.askForFrame('login')
+            }
           }
           else if(i==4){
-            this.$router.push('/user/publish')
+            if(this.login){
+              this.$router.push('/user/publish')
+            }
+            else{
+              this.askForFrame('login')
+            }
           }
-        }
-      }
+        },
+        getUser(){
+          var username=sessionStorage.getItem("username")
+          console.log(username+" in method")
+          if(username==null){
+            this.login=false
+          }
+          else{
+            this.username=username
+            this.login=true
+            //同时设置头像
+          }
+        },
+        askForFrame(para){
+          this.$emit('showFrame',para)
+        },
+      },
+      props:['frame']
     }
 </script>
 
@@ -84,5 +130,24 @@
   .menu_active:focus{
     -webkit-text-fill-color: #e64919;
     border: rgba(230,73,25,0.5) solid 3px;
+  }
+
+  .login{
+    background: none;
+    border: 1px solid rgba(230,73,25,0.5);
+    -webkit-text-fill-color: rgba(230,73,25,0.5);
+    font-size: 15px;
+    padding: 2px;
+    border-radius: 15px;
+    width: 50px;
+    outline: none;
+  }
+
+  .login:hover{
+    /*border: 2px solid rgba(230,73,25,0.5);*/
+    /*-webkit-text-fill-color: rgba(230,73,25,0.5);*/
+    background-color: rgba(230,73,25,0.5);
+    -webkit-text-fill-color: #ffffff;
+    font-weight: bold;
   }
 </style>

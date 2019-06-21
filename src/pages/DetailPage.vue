@@ -1,83 +1,86 @@
 <template>
-    <div style="background-color: #FFFFFF;padding: 10px">
-      <Menu ref="menu"></Menu>
+  <div>
+    <Login style="position: absolute;z-index: 2" v-if="login.showLogin" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Login>
+    <Register style="position: absolute;z-index: 2" v-if="login.showRegister" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Register>
+    <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
+      <Menu ref="menu" v-bind:frame="login.frame" v-on:showFrame="askLoginOrRegister($event)"></Menu>
       <div id="article area" style="width: 82%;margin-left: auto;margin-right: auto;">
-      <Breadcrumb separator=">" style="margin-bottom: 15px">
-        <BreadcrumbItem to="/">主页</BreadcrumbItem>
-        <BreadcrumbItem to="/大标签/小标签">大标签</BreadcrumbItem>
-        <BreadcrumbItem>小标签</BreadcrumbItem>
-      </Breadcrumb>
-      <p style="font-weight: bold;font-size: 32px;color: #464c5b;margin-bottom: 15px">
-        <Icon type="md-cloud-upload" style="margin-right: 30px"/>文章标题
-      </p>
-      <div class="markdown-body" id="content" style="font-size: 16px;background-color: rgb(245,246,247);padding: 20px 20px 20px 20px;margin-bottom: 15px">
-        <p><strong>我没有什么好怕的，说实话。阿瓦达hi奥的厚爱哇ID我回答道哈迪我的号ID我哦啊的厚爱的午后到活动我爱好爱好都爱我的味道伟大无，我没有什么好怕的，说实话。阿瓦达hi奥的厚爱哇ID我回答道哈迪我的号ID我哦啊的厚爱的午后到活动我爱好爱好都爱我的味道伟大无。</strong><br /> <em>我这么强，我太刁了。</em></p> <ol> <li>我的hi是试试</li> <li>我的对待将诶</li> <li>味道伟大无多无多</li> <li>当地的</li> </ol> <ul> <li>阿瓦达无</li> <li>味道伟大无</li> <li>我的人头</li> <li>儿童人员要</li> <li>儿童热帖</li> </ul> <table> <thead> <tr> <th>column1</th> <th>column2</th> <th>column3</th> </tr> </thead> <tbody> <tr> <td>content1</td> <td>content2</td> <td>content3</td> </tr> </tbody> </table>
-      </div>
+        <Breadcrumb separator=">" style="margin-bottom: 15px">
+          <BreadcrumbItem to="/">主页</BreadcrumbItem>
+          <BreadcrumbItem to="/大标签/小标签">大标签</BreadcrumbItem>
+          <BreadcrumbItem>小标签</BreadcrumbItem>
+        </Breadcrumb>
+        <p style="font-weight: bold;font-size: 32px;color: #464c5b;margin-bottom: 15px">
+          <Icon type="md-cloud-upload" style="margin-right: 30px"/>文章标题
+        </p>
+        <div class="markdown-body" id="content" style="font-size: 16px;background-color: rgb(245,246,247);padding: 20px 20px 20px 20px;margin-bottom: 15px">
+          <p><strong>我没有什么好怕的，说实话。阿瓦达hi奥的厚爱哇ID我回答道哈迪我的号ID我哦啊的厚爱的午后到活动我爱好爱好都爱我的味道伟大无，我没有什么好怕的，说实话。阿瓦达hi奥的厚爱哇ID我回答道哈迪我的号ID我哦啊的厚爱的午后到活动我爱好爱好都爱我的味道伟大无。</strong><br /> <em>我这么强，我太刁了。</em></p> <ol> <li>我的hi是试试</li> <li>我的对待将诶</li> <li>味道伟大无多无多</li> <li>当地的</li> </ol> <ul> <li>阿瓦达无</li> <li>味道伟大无</li> <li>我的人头</li> <li>儿童人员要</li> <li>儿童热帖</li> </ul> <table> <thead> <tr> <th>column1</th> <th>column2</th> <th>column3</th> </tr> </thead> <tbody> <tr> <td>content1</td> <td>content2</td> <td>content3</td> </tr> </tbody> </table>
+        </div>
         <Card style="margin-bottom: 15px">
           <Row>
             <Col span="3">
-            <Row style="text-align: center">
-            <img style="width:40px" src="https://img.hacpai.com/avatar/1533003378805_1558945542044.jpeg?imageView2/1/w/20/h/20/interlace/0/q/100">
-            </Row>
-            <Row style="text-align: center">
-              <span>本文作者</span>
-            </Row>
+              <Row style="text-align: center">
+                <img style="width:40px" src="https://img.hacpai.com/avatar/1533003378805_1558945542044.jpeg?imageView2/1/w/20/h/20/interlace/0/q/100">
+              </Row>
+              <Row style="text-align: center">
+                <span>本文作者</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> &nbsp;用户名</span>
-            </Row>
-            <Row>
-              <Time :time="1559291454432" />
-            </Row>
+              <Row style="margin-top:5px">
+                <span> &nbsp;用户名</span>
+              </Row>
+              <Row>
+                <Time :time="1559291454432" />
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> <Icon type="md-star" />2</span>
-            </Row>
-            <Row>
-              <span>关注</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span> <Icon type="md-star" />2</span>
+              </Row>
+              <Row>
+                <span>关注</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span><Icon type="md-clipboard" />4</span>
-            </Row>
-            <Row>
-              <span>回帖</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span><Icon type="md-clipboard" />4</span>
+              </Row>
+              <Row>
+                <span>回帖</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> <Icon type="md-people" />67</span>
-            </Row>
-            <Row>
-              <span>访问人数</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span> <Icon type="md-people" />67</span>
+              </Row>
+              <Row>
+                <span>访问人数</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> <Icon type="md-document" />55</span>
-            </Row>
-            <Row>
-              <span>浏览帖子数</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span> <Icon type="md-document" />55</span>
+              </Row>
+              <Row>
+                <span>浏览帖子数</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> <Icon type="md-cloud-upload" />77</span>
-            </Row>
-            <Row>
-              <span>发帖数</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span> <Icon type="md-cloud-upload" />77</span>
+              </Row>
+              <Row>
+                <span>发帖数</span>
+              </Row>
             </Col>
             <Col span="3">
-            <Row style="margin-top:5px">
-              <span> <Icon type="md-heart" />55</span>
-            </Row>
-            <Row>
-              <span>收藏</span>
-            </Row>
+              <Row style="margin-top:5px">
+                <span> <Icon type="md-heart" />55</span>
+              </Row>
+              <Row>
+                <span>收藏</span>
+              </Row>
             </Col>
           </Row>
         </Card>
@@ -86,9 +89,9 @@
           <Row>
             <Col span="2"><img style="width:50px;padding-left: 10px" src="https://img.hacpai.com/avatar/1533003378805_1558945542044.jpeg?imageView2/1/w/20/h/20/interlace/0/q/100"></Col>
             <Col span="22">
-            <div id="editor">
-            <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
-            </div>
+              <div id="editor">
+                <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
+              </div>
             </Col>
           </Row>
         </div>
@@ -104,22 +107,22 @@
             <Card style="margin-bottom:15px">
               <Row>
                 <Col span="2">
-                <img style="width:40px" v-bind:src="comment.user_photo">
+                  <img style="width:40px" v-bind:src="comment.user_photo">
                 </Col>
                 <Col span="20">
-                <Row>
-                  <p>
-                    <span>{{comment.user_name}}</span>&nbsp;
-                    <Time v-bind:time="comment.time" />
-                  </p>
-                </Row>
-                <Row>
-                  <div v-html="comment.content"></div>
-                </Row>
+                  <Row>
+                    <p>
+                      <span>{{comment.user_name}}</span>&nbsp;
+                      <Time v-bind:time="comment.time" />
+                    </p>
+                  </Row>
+                  <Row>
+                    <div v-html="comment.content"></div>
+                  </Row>
                 </Col>
                 <Col span="2">
-                <Row><Icon type="md-thumbs-up" />&nbsp;点赞</Row>
-                <Row><Icon type="md-heart" />&nbsp;收藏</Row>
+                  <Row><Icon type="md-thumbs-up" />&nbsp;点赞</Row>
+                  <Row><Icon type="md-heart" />&nbsp;收藏</Row>
                 </Col>
               </Row>
             </Card>
@@ -132,17 +135,20 @@
         </table>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
   import Menu from '../components/Menu/Menu'
   import Editorbar from "../components/wangeditor/wangeditor";
   import 'mavon-editor/dist/markdown/github-markdown.min.css'
+  import Login from '../components/user/LoginPage'
+  import Register from '../components/user/RegisterPage'
     export default {
         name: "DetailPage",
       components:{
         Editorbar,
-        Menu
+        Menu,Login,Register
       },
       mounted(){
         // this.$refs.menu.active_index=2;
@@ -155,6 +161,12 @@
       },
       data(){
           return {
+            login:{
+              showLogin:false,
+              showRegister:false,
+              blur_num:0,
+              frame:''
+            },
             editor: {
               info:'想对作者说些什么...'
             },
@@ -342,6 +354,13 @@
           }
         },
         addComment(){
+          if(sessionStorage.getItem("username")==null){
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = document.body.scrollTop = 0;
+            this.$el.parentNode.scrollTop = 0;
+            this.askLoginOrRegister('login')
+            return
+          }
           var comment=$(".w-e-text").html();
           $(".w-e-text").html("");
           var time=(new Date()).getTime();
@@ -353,6 +372,25 @@
             };
           this.total_comments.unshift(data);
           this.changePage(1);
+        },
+        //判断该打开login窗口还是register窗口,或者关闭该窗口
+        askLoginOrRegister(frame){
+          if(frame=='login'){
+            this.login.showLogin=true
+            this.login.showRegister=false
+            this.login.blur_num=10
+          }
+          else if(frame=='register'){
+            this.login.showLogin=false
+            this.login.showRegister=true
+            this.login.blur_num=10
+          }
+          else if(frame=='close'){
+            this.login.showLogin=false
+            this.login.showRegister=false
+            this.login.blur_num=0
+          }
+          this.$refs.menu.getUser()
         }
       },
       created(){
