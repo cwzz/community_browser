@@ -43,62 +43,58 @@
       <div style="width: 100%;height: 5px;background-color: #e64919;margin-bottom: 10px"></div>
       <div style="width: 100%;height: 5px;background-color: #e64919;margin-bottom: 20px"></div>
       <!--下面是分类和标签-->
-      <div style="">
-        <Card class="card">
-          <p slot="title" class="class-title">
-            法律咨询
-          </p>
-          <Row>
-            <Col span="6">
-              <Icon custom="iconfont i-icon-law icon"></Icon>
-            </Col>
-            <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}<br></Tag>
-            </Col>
-          </Row>
-        </Card>
+      <div>
+        <div class="card">
+          <div style="padding: 20px;height: 200px">
+            <div style="width: 15%;float: left">
+              <Icon @click="chooseCategory('法律咨询')" custom="iconfont i-icon-law icon" color="rgba(230,73,25)" style="cursor: pointer;"></Icon>
+            </div>
+            <div style="width: 85%;float: left">
+              <p @click="chooseCategory('法律咨询')">法律咨询</p>
+              <div style="width: 100%;height: 2px;background-color: #dcdee2;margin-bottom: 10px"></div>
+              <button v-for="(tag,index) in values[0].values" :key="index" @click="chooseArticle('法律咨询-'+tag)" class="tag-class">{{tag}}</button>
+            </div>
+          </div>
+        </div>
 
-        <Card class="card">
-          <p slot="title" class="class-title">
-            金融问题
-          </p>
-          <Row>
-            <Col span="6">
-              <Icon custom="iconfont i-icon-eco icon"></Icon>
-            </Col>
-            <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
-            </Col>
-          </Row>
-        </Card>
+        <div class="card">
+          <div style="padding: 20px;height: 200px">
+            <div style="width: 15%;float: left">
+              <Icon @click="chooseCategory('金融问题')" custom="iconfont i-icon-eco icon" color="rgba(230,73,25)" style="cursor: pointer;"></Icon>
+            </div>
+            <div style="width: 85%;float: left">
+              <p @click="chooseCategory('金融问题')">金融问题</p>
+              <div style="width: 100%;height: 2px;background-color: #dcdee2;margin-bottom: 10px"></div>
+              <button v-for="(tag,index) in values[1].values" :key="index" @click="chooseArticle('金融问题-'+tag)" class="tag-class">{{tag}}</button>
+            </div>
+          </div>
+        </div>
 
-        <Card class="card">
-          <p slot="title" class="class-title">
-            专利方面
-          </p>
-          <Row>
-            <Col span="6">
-              <Icon custom="iconfont i-icon-patent icon"></Icon>
-            </Col>
-            <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
-            </Col>
-          </Row>
-        </Card>
+        <div class="card">
+          <div style="padding: 20px;height: 200px">
+            <div style="width: 15%;float: left">
+              <Icon @click="chooseCategory('专利方面')" custom="iconfont i-icon-patent icon" color="rgba(230,73,25)" style="cursor: pointer;"></Icon>
+            </div>
+            <div style="width: 85%;float: left">
+              <p @click="chooseCategory('专利方面')">专利方面</p>
+              <div style="width: 100%;height: 2px;background-color: #dcdee2;margin-bottom: 10px"></div>
+              <button v-for="(tag,index) in values[2].values" :key="index" @click="chooseArticle('专利方面-'+tag)" class="tag-class">{{tag}}</button>
+            </div>
+          </div>
+        </div>
 
-        <Card class="card">
-          <p slot="title" class="class-title">
-            其他问题
-          </p>
-          <Row>
-            <Col span="6">
-              <Icon custom="iconfont i-icon-other icon"></Icon>
-            </Col>
-            <Col span="18" style="padding-top: 40px;">
-              <Tag class="tag-class" type="border" v-for="(tag,index) in tags" :key="index" @click="chooseArticle(tag)">{{tag}}</Tag>
-            </Col>
-          </Row>
-        </Card>
+        <div class="card">
+          <div style="padding: 20px;height: 200px">
+            <div style="width: 15%;float: left">
+              <Icon @click="chooseCategory('其他问题')" custom="iconfont i-icon-other icon" color="rgba(230,73,25)" style="cursor: pointer;"></Icon>
+            </div>
+            <div style="width: 85%;float: left">
+              <p @click="chooseCategory('其他问题')">其他问题</p>
+              <div style="width: 100%;height: 2px;background-color: #dcdee2;margin-bottom: 10px"></div>
+              <button v-for="(tag,index) in values[3].values" :key="index" @click="chooseArticle('其他问题-'+tag)" class="tag-class">{{tag}}</button>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -270,9 +266,24 @@
             author:'白展堂'
           }
         ],
-        tags:[
-          '标签1','标签13','标签14','标签15','标签16','标签17','标签18'
-        ]
+        values:[
+        {
+          name:'法律咨询',
+          values:['信息咨询','求助/讨论','法考/思考','备考经验','政策解读','相关资料','会议讲座','知识产权诉讼','资格证','学习笔记','程序与手续问题','其他实务']
+        },
+        {
+          name:'金融问题',
+          values:['职场经验','行业探讨','行业动态','IP风险管理','IP管理体系','IP部门构建','IP运营','IP保护','商标版权','程序与手续问题','机构探讨','曝光台']
+        },
+        {
+          name:'专利方面',
+          values:['专利保护','专利撰写','专利知识普及','专利转让','专利实物','检索分析','答辩（OA）','复审与无效','程序与手续问题','审查专业问题','文章资料']
+        },
+        {
+          name:'其他问题',
+          values:['征文活动','求职招聘&兼职','求购转让','公告','问题反馈','交友','国外资料','其他IP实务','创意设计']
+        }
+      ],//这就是所有的标签分类数组
       }
     },
     methods:{
@@ -303,7 +314,15 @@
         }
       },
       chooseArticle(article){
-
+        var text=article.split('-')
+        sessionStorage.setItem("category",text[0])
+        sessionStorage.setItem("label",text[1])
+        this.$router.push('/articles')
+      },
+      chooseCategory(category){
+        sessionStorage.setItem("category",category)
+        sessionStorage.setItem("label",0)
+        this.$router.push('/articles')
       },
       //判断该打开login窗口还是register窗口,或者关闭该窗口
       askLoginOrRegister(frame){
@@ -341,22 +360,36 @@
 <style scoped>
   .tag-class{
     font-size: 15px;
-    width: 70px;
     margin-right: 15px;
+    margin-top: 10px;
     text-align: center;
-    /*color: red;*/
+    background-color: #f8f8f9;
+    border-radius: 5px;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   .tag-class:hover{
-    border-color: #e64929;
-    color: #e64929;
+    background-color: #e64929;
+    -webkit-text-fill-color: white;
+    cursor: pointer;
   }
   .icon{
     margin-top: 15px;
     /*color: #e64929;*/
   }
   .card{
-    margin-bottom: 20px;
-    height: 235px;
+    margin-bottom: 20px;box-shadow: #dcdee2 0px 0px 5px 1px ;border-radius: 5px
+  }
+
+  .card p{
+    -webkit-text-fill-color: #515a6e;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
   }
   .class-title{
     font-size: 21px;
