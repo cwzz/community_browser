@@ -12,18 +12,15 @@
           <p style="padding-top: 50px;font-weight: bold;font-size: 18px;font-family: 楷体;padding-left: 10px">欢迎来到 <span style="font-family: 华文行楷">IPnet</span></p>
         </div>
       </div>
-      <Form ref="formInline" :model="formInline" :rules="ruleInline" :label-width="100" style="width: 400px">
+      <Form ref="formInline" :model="formInline" :rules="ruleInline" :label-width="100" style="width: 400px;margin-top: 40px">
         <FormItem prop="user" label="用户名">
           <Input type="text" v-model="formInline.user" placeholder="用户名/邮箱"></Input>
         </FormItem>
-        <FormItem prop="password" label="密码">
-          <Input type="password" v-model="formInline.password" placeholder="请输入您的密码"></Input>
+        <FormItem style="text-align: right" v-if="!showTip">
+          <Button type="error" @click="handleSubmit('formInline')" style="margin-left: 15px">重置密码</Button>
         </FormItem>
-        <FormItem style="text-align: right">
-          <a class="link" @click="handleClose('forget')">忘记密码</a>
-          <Divider type="vertical"></Divider>
-          <a class="link" @click="handleClose('register')">注册用户</a>
-          <Button type="error" @click="handleSubmit('formInline')" style="margin-left: 15px">登 录</Button>
+        <FormItem style="text-align: right" v-if="showTip">
+          <span style="-webkit-text-fill-color: #19be6b">{{recommend_text}}</span><Button type="success" @click="handleClose('close')" style="margin-left: 15px">确认</Button>
         </FormItem>
       </Form>
     </div>
@@ -36,31 +33,33 @@
     data () {
       return {
         formInline: {
-          user: '',
-          password: ''
+          user: ''
         },
         ruleInline: {
           user: [
             { required: true, message: '请填写用户名', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请填写密码', trigger: 'blur' },
           ]
         },
         window_width:window.innerWidth,
-        window_height:window.innerHeight
+        window_height:window.innerHeight,
+        showTip:false,
+        recommend_text:''
       }
     },
     methods: {
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
-            //登录
-            sessionStorage.setItem("username","asdf")
-            this.handleClose()
-          } else {
-            this.$Message.error('用户名与密码不匹配，请重新输入');
+            this.$axios.post('/server/forgetPass',{email:this.formInline.user}).then(re=>{
+              if(re.data=='Success'){
+                this.showTip=true
+                this.recommend_text='我们已经成功重置了您的密码，请在邮箱中确认。'
+              }
+              else{
+                this.$Message.error('抱歉，系统中暂无该用户')
+              }
+            })
+
           }
         })
       },
@@ -76,6 +75,7 @@
   #back{
     background-color: rgba(255,255,255,0.8);
     padding: 20px;
+    box-shadow: #dcdee2 0px 0px 5px 1px
   }
 
   #close{

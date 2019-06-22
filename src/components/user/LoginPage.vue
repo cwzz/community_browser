@@ -55,12 +55,18 @@
         handleSubmit(name) {
           this.$refs[name].validate((valid) => {
             if (valid) {
-              this.$Message.success('Success!');
               //登录
-              sessionStorage.setItem("username","asdf")
-              this.handleClose()
-            } else {
-              this.$Message.error('用户名与密码不匹配，请重新输入');
+              this.$axios.post('/server/loginBack',{email:this.formInline.user,password:this.formInline.password}).then(re=>{
+                if(re.data=='Success'){
+                  sessionStorage.setItem("username",this.formInline.user)
+                  this.handleClose('close')
+                }
+                else{
+                  this.$Message.error('密码错误')
+                  this.formInline.password=''
+                }
+              })
+
             }
           })
         },
@@ -76,6 +82,7 @@
 #back{
   background-color: rgba(255,255,255,0.8);
   padding: 20px;
+  box-shadow: #dcdee2 0px 0px 5px 1px
 }
 
   #close{

@@ -30,7 +30,6 @@
         name: "Menu",
       mounted(){
         var username=sessionStorage.getItem("username")
-        console.log(username+" in method")
         if(username==null){
           this.login=false
         }
@@ -38,6 +37,9 @@
           this.username=username
           this.login=true
           //同时设置头像
+          this.$axios.post('/server/getImageUrl',{email:username}).then(re=>{
+            this.avatar_url=re.data
+          })
         }
       },
       data(){
