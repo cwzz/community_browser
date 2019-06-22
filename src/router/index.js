@@ -12,7 +12,6 @@ import UserFollowPage from '@/pages/UserFollowPage'
 import UserFansPage from '@/pages/UserFansPage'
 import UserInfoPage from '@/pages/UserInfoPage'
 import UserMessagePage from "@/pages/UserMessagePage"
-import ForgetPasswordPage from "@/pages/ForgetPasswordPage"
 
 Vue.use(Router)
 
@@ -79,10 +78,6 @@ export default new Router({
       name:'TestForm',
       component:TestForm
     },
-    {
-      path:'/forget',
-      name:'ForgetPasswordPage',
-      component:ForgetPasswordPage
-    }
+
   ]
 })

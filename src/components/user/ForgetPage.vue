@@ -31,52 +31,52 @@
 </template>
 
 <script>
-    export default {
-        name: "LoginPage",
-      data () {
-        return {
-          formInline: {
-            user: '',
-            password: ''
-          },
-          ruleInline: {
-            user: [
-              { required: true, message: '请填写用户名', trigger: 'blur' }
-            ],
-            password: [
-              { required: true, message: '请填写密码', trigger: 'blur' },
-            ]
-          },
-          window_width:window.innerWidth,
-          window_height:window.innerHeight
-        }
-      },
-      methods: {
-        handleSubmit(name) {
-          this.$refs[name].validate((valid) => {
-            if (valid) {
-              this.$Message.success('Success!');
-              //登录
-              sessionStorage.setItem("username","asdf")
-              this.handleClose()
-            } else {
-              this.$Message.error('用户名与密码不匹配，请重新输入');
-            }
-          })
+  export default {
+    name: "ForgetPage",
+    data () {
+      return {
+        formInline: {
+          user: '',
+          password: ''
         },
-        handleClose(para){
-          this.$emit('closeFrame',para)
+        ruleInline: {
+          user: [
+            { required: true, message: '请填写用户名', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请填写密码', trigger: 'blur' },
+          ]
         },
+        window_width:window.innerWidth,
+        window_height:window.innerHeight
+      }
+    },
+    methods: {
+      handleSubmit(name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.$Message.success('Success!');
+            //登录
+            sessionStorage.setItem("username","asdf")
+            this.handleClose()
+          } else {
+            this.$Message.error('用户名与密码不匹配，请重新输入');
+          }
+        })
       },
-      props:['close_frame']
-    }
+      handleClose(para){
+        this.$emit('closeFrame',para)
+      },
+    },
+    props:['close_frame']
+  }
 </script>
 
 <style scoped>
-#back{
-  background-color: rgba(255,255,255,0.8);
-  padding: 20px;
-}
+  #back{
+    background-color: rgba(255,255,255,0.8);
+    padding: 20px;
+  }
 
   #close{
     font-size: 30px;
