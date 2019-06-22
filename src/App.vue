@@ -32,5 +32,7 @@ export default {
   overflow: auto;
   padding-left: 12%;
   padding-right: 12%;
+  position: absolute;
+  z-index: 0;
 }
 </style>

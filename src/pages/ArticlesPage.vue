@@ -1,6 +1,9 @@
 <template>
-    <div style="background-color: #FFFFFF;padding: 10px">
-      <Menu ref="menu"></Menu>
+  <div>
+    <Login style="position: absolute;z-index: 2" v-if="login.showLogin" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Login>
+    <Register style="position: absolute;z-index: 2" v-if="login.showRegister" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Register>
+    <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
+      <Menu ref="menu" v-bind:frame="login.frame" v-on:showFrame="askLoginOrRegister($event)"></Menu>
       <div>
         <p>{{category_name}}&nbsp&nbsp{{tag_name}}</p>
         <div style="height: 130px;background-color: rgb(249,249,249);padding: 10px">
@@ -45,18 +48,27 @@
         </table>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
   import Menu from '../components/Menu/Menu'
+  import Login from '../components/user/LoginPage'
+  import Register from '../components/user/RegisterPage'
     export default {
         name: "ArticlesPage",
-      components:{Menu},
+      components:{Menu,Login,Register},
       mounted(){
         this.$refs.menu.active_index=2
       },
       data(){
           return{
+            login:{
+              showLogin:false,
+              showRegister:false,
+              blur_num:0,
+              frame:''
+            },
             category:0,//类别index
             tag:0,//标签index
             values:[
@@ -310,6 +322,25 @@
         //在特定的标签下切换页面
         changePage(page){
           this.article_begin=(page-1)*this.show_page_nums
+        },
+        //判断该打开login窗口还是register窗口,或者关闭该窗口
+        askLoginOrRegister(frame){
+          if(frame=='login'){
+            this.login.showLogin=true
+            this.login.showRegister=false
+            this.login.blur_num=10
+          }
+          else if(frame=='register'){
+            this.login.showLogin=false
+            this.login.showRegister=true
+            this.login.blur_num=10
+          }
+          else if(frame=='close'){
+            this.login.showLogin=false
+            this.login.showRegister=false
+            this.login.blur_num=0
+          }
+          this.$refs.menu.getUser()
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #FFFFFF;padding: 10px">
+  <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{minHeight:this.height+'px'}">
     <Menu ref="head"></Menu>
     <Layout>
       <Layout>
@@ -57,8 +57,14 @@
   export default {
     name: "UserInfoPage",
     components:{Menu,Main},
+    data(){
+      return{
+        height:''
+      }
+    },
     mounted(){
       this.$refs.head.active_index=4;
+      this.height=window.innerHeight
     },
     methods:{
       modifyPic(){
@@ -66,7 +72,7 @@
       },
       modifyInfo(){
 
-      }
+      },
     }
   }
 </script>
