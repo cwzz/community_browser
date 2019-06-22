@@ -2,6 +2,7 @@
   <div>
     <Login style="position: absolute;z-index: 2" v-if="login.showLogin" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Login>
     <Register style="position: absolute;z-index: 2" v-if="login.showRegister" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Register>
+    <Forget style="position: absolute;z-index: 2" v-if="login.showForget" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Forget>
     <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
       <Menu ref="menu" v-bind:frame="login.frame" v-on:showFrame="askLoginOrRegister($event)"></Menu>
       <div id="article area" style="width: 82%;margin-left: auto;margin-right: auto;">
@@ -144,11 +145,12 @@
   import 'mavon-editor/dist/markdown/github-markdown.min.css'
   import Login from '../components/user/LoginPage'
   import Register from '../components/user/RegisterPage'
+  import Forget from '../components/user/ForgetPage'
     export default {
         name: "DetailPage",
       components:{
         Editorbar,
-        Menu,Login,Register
+        Menu,Login,Register,Forget
       },
       mounted(){
         // this.$refs.menu.active_index=2;
@@ -164,6 +166,7 @@
             login:{
               showLogin:false,
               showRegister:false,
+              showForget:false,
               blur_num:0,
               frame:''
             },
@@ -378,16 +381,25 @@
           if(frame=='login'){
             this.login.showLogin=true
             this.login.showRegister=false
+            this.login.showForget=false
             this.login.blur_num=10
           }
           else if(frame=='register'){
             this.login.showLogin=false
             this.login.showRegister=true
+            this.login.showForget=false
+            this.login.blur_num=10
+          }
+          else if(frame=='forget'){
+            this.login.showLogin=false
+            this.login.showRegister=false
+            this.login.showForget=true
             this.login.blur_num=10
           }
           else if(frame=='close'){
             this.login.showLogin=false
             this.login.showRegister=false
+            this.login.showForget=false
             this.login.blur_num=0
           }
           this.$refs.menu.getUser()
