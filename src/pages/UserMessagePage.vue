@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #FFFFFF;padding: 10px">
+  <div style="background-color: #FFFFFF;padding: 10px;min-height: 800px">
     <Menu ref="head"></Menu>
     <Layout>
       <Layout>
@@ -10,26 +10,27 @@
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
             <span style="font-size: 18px;font-weight: bold;position: absolute">消息通知</span>
             <Divider style="margin-top: 35px"/>
-            <table style="width: 100%" id="article_title">
-              <tr style="width: 100%">
-                <th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>
-                <!--<th style="width: 20%">作者</th>-->
-                <th style="width: 20%">回复/浏览</th>
-              </tr>
-            </table>
-            <table  style="width: 100%" id="articles">
-              <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <!--<td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>-->
-                <td style="width: 4%"><Icon type="ios-mail-open-outline" /></td>
-                <td style="width: 76%">{{article.title}}</td>
-                <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
-              </tr>
-              <tr>
-                <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
-                  <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
-                </td>
-              </tr>
-            </table>
+            <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">暂无消息</div>
+            <div v-else>
+              <table style="width: 100%" id="article_title">
+                <tr style="width: 100%">
+                  <th style="width: 20%;text-align: center">时间</th>
+                  <th style="width: 80%;text-align: center" colspan="2">全部</th>
+                </tr>
+              </table>
+              <table  style="width: 100%" id="articles">
+                <tr v-for="(article,index) in articles" class="page" v-if="canShow(index)">
+                  <td style="width: 20%;text-align: center">1998.02.02 16:42:00</td>
+                  <td style="width: 4%"><Icon type="ios-mail-open-outline" /></td>
+                  <td style="width: 76%;word-wrap: break-word">{{article.title}}</td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="background-color: #f8f8f9;padding: 7px">
+                    <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
+                  </td>
+                </tr>
+              </table>
+            </div>
           </Content>
         </Layout>
       </Layout>
@@ -54,7 +55,7 @@
           {
             // set_top:true,
             tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
+            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
             reply:150,
             view:1200,
             content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
@@ -246,9 +247,6 @@
       }
     },
     methods:{
-      chooseArticle(article){
-        this.$Message.success(article.title)
-      },
       //判断在当前页哪些文章可以显示
       canShow(index){
         var bool=(index>=this.article_begin)&&(index<this.article_begin+this.show_page_nums);
@@ -273,7 +271,8 @@
   #articles td{
     padding: 7px;
     background: none;
-    border: 0px;
+    /*border: 0px;*/
+    border-bottom: 1px solid #dcdee2;
   }
   #articles tr{
     background-color: #f8f8f9;

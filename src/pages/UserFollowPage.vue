@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #FFFFFF;padding: 10px">
+  <div style="background-color: #FFFFFF;padding: 10px;min-height: 800px">
     <Menu ref="head"></Menu>
     <Layout>
       <Layout>
@@ -13,13 +13,13 @@
             <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">暂无关注的博主</div>
             <div v-else>
               <table  style="width: 100%" id="articles">
-                <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                  <td>
+                <tr v-for="(article,index) in articles" class="page" v-if="canShow(index)">
+                  <td @click="chooseArticle(article)">
                     <img :src=article.img  style="width: 50px;height: 50px;">
                   </td>
-                  <td style="width: 76%">{{article.name}}</td>
+                  <td style="width: 76%" @click="chooseArticle(article)">{{article.name}}</td>
                   <td style="width: 20%">
-                    <Button @click.native="cancelFollow()">取消关注</Button>
+                    <Button @click.native="cancelFollow(article)">取消关注</Button>
                   </td>
                 </tr>
                 <tr>
@@ -52,116 +52,23 @@
         return{
           category_name:'全部',//类别名称
           tag_name:'',//标签名称
-          articles:[
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Jane',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'粽仔是最帅的',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'吊炸炫酷天的粽仔',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Apolo',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Halo',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'好好学习',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'天天向上',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'你有事吗',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'我没事',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'yeah！',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'逗你玩',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'姚琛要出道呀',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'小琛哥最帅',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'易烊千玺最帅',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'王俊凯最帅',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'王源最帅',
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-
-          ],
+          articles:[],
           article_begin:0,//当前页面的文章开始下标
           show_page_nums:15,//一个页面总共可以显示多少条信息
           current_page:1//当前是第几页
         }
       },
       methods:{
-        cancelFollow(){
-
+        async cancelFollow(article,num){
+          await this.$axios.post('/server/C_User/cancelStarUser',{currentUser:sessionStorage.getItem("username"),param:article.email}).then(re=>{
+          })
+          this.$axios.post('/server/C_User/getMyStarUser',{email:sessionStorage.getItem("username")}).then(re=>{
+            this.articles=re.data
+          })
         },
         chooseArticle(article){
-          this.$Message.success(article.title)
+          sessionStorage.setItem("author_email",article.email)
+          this.$router.push('/author')
         },
         //判断在当前页哪些文章可以显示
         canShow(index){

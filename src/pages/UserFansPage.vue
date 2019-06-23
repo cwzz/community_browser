@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #FFFFFF;padding: 10px">
+  <div style="background-color: #FFFFFF;padding: 10px;min-height: 800px">
     <Menu ref="head"></Menu>
     <Layout>
       <Layout>
@@ -10,26 +10,29 @@
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
             <span style="font-size: 18px;font-weight: bold;position: absolute">我的粉丝</span>
             <Divider style="margin-top: 35px"/>
-            <table  style="width: 100%" id="articles">
-              <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <td>
-                  <img :src=article.img  style="width: 50px;height: 50px;">
-                </td>
-                <td style="width: 76%">{{article.name}}</td>
-                <td style="width: 20%" v-if="article.isFollow">
-                  <Button @click.native="cancelFollow()">取消关注</Button>
-                </td>
-                <td style="width: 20%" v-else>
-                  <Button @click.native="follow()">+关注</Button>
-                </td>
+            <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">您暂时还没有粉丝</div>
+            <div v-else>
+              <table  style="width: 100%" id="articles">
+                <tr v-for="(article,index) in articles" class="page" v-if="canShow(index)">
+                  <td @click="chooseArticle(article)">
+                    <img :src=article.img  style="width: 50px;height: 50px;">
+                  </td>
+                  <td style="width: 76%" @click="chooseArticle(article)">{{article.name}}</td>
+                  <td style="width: 20%" v-if="article.isFollow">
+                    <Button @click.native="cancelFollow(article,index)">取消关注</Button>
+                  </td>
+                  <td style="width: 20%" v-else>
+                    <Button @click.native="follow(article,index)">+关注</Button>
+                  </td>
 
-              </tr>
-              <tr>
-                <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
-                  <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
-                </td>
-              </tr>
-            </table>
+                </tr>
+                <tr>
+                  <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
+                    <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
+                  </td>
+                </tr>
+              </table>
+            </div>
           </Content>
         </Layout>
       </Layout>
@@ -45,135 +48,36 @@
       components:{Main,Menu},
       mounted(){
         this.$refs.head.active_index=4;
+        this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
+          this.articles=re.data
+        })
       },
       data(){
         return{
           category_name:'全部',//类别名称
           tag_name:'',//标签名称
-          articles:[
-            {
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Jane',
-              isFollow:false,
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'粽仔是最帅的',
-              isFollow:true,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'吊炸炫酷天的粽仔',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Apolo',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'Halo',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'好好学习',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'天天向上',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'你有事吗',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'我没事',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'yeah！',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'逗你玩',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'姚琛要出道呀',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'小琛哥最帅',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'易烊千玺最帅',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'王俊凯最帅',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-            {
-              tag:'通知公告',
-              img:'/static/img/elephant.d0491c9.png',
-              name:'王源最帅',
-              isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-            },
-
-          ],
+          articles:[],
           article_begin:0,//当前页面的文章开始下标
           show_page_nums:15,//一个页面总共可以显示多少条信息
           current_page:1//当前是第几页
         }
       },
       methods:{
-        follow(){
-
+        async follow(article,index){
+          this.articles[index].isFollow=true
+          await this.$axios.post('/server/C_User/starUser',{currentUser:sessionStorage.getItem("username"),param:article.email}).then(re=>{
+          })
+          this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
+            this.articles=re.data
+          })
         },
-        cancelFollow(){
-
+        async cancelFollow(article,index){
+          this.articles[index].isFollow=false
+          await this.$axios.post('/server/C_User/cancelStarUser',{currentUser:sessionStorage.getItem("username"),param:article.email}).then(re=>{
+          })
+          this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
+            this.articles=re.data
+          })
         },
         chooseArticle(article){
           this.$Message.success(article.title)
