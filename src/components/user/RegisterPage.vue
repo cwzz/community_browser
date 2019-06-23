@@ -46,14 +46,14 @@
             <Input type="text" v-model="formCustom2.email" placeholder="用户名/邮箱" disabled ></Input>
           </FormItem>
           <FormItem label="密码" prop="password">
-            <Input type="password" v-model="formCustom2.password" placeholder="请输入密码"></Input>
+            <Input type="password" v-model="formCustom2.password" placeholder="请输入密码" disabled></Input>
           </FormItem>
           <FormItem label="确认密码">
-            <Input type="password" v-model="formCustom2.password" placeholder="请再次输入密码"></Input>
+            <Input type="password" v-model="formCustom2.password" placeholder="请再次输入密码" disabled></Input>
           </FormItem>
           <FormItem label="验证码" prop="code">
             <Input style="width: 50%" v-model="formCustom2.code" placeholder="请输入验证码" :disabled="firstPage"></Input>
-            <Button type="error" @click="getCheckCode('formCustom2')" style="margin-left: 15px">获得验证码</Button>
+            <Button type="error" @click="handleSubmit('formCustom2')" style="margin-left: 15px">完成注册</Button>
           </FormItem>
         </Form>
       </div>
@@ -130,7 +130,7 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$axios.post('/server/sendCode',{email:this.formCustom.user}).then(re=>{
-              if(re.data=='EXIST'){
+              if(re.data=='Exist'){
                 this.$Message.error('您的邮箱已注册')
               }
               else{
