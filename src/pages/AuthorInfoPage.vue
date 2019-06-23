@@ -112,18 +112,23 @@
           this.$axios.post('/server/getImageUrl',{email:sessionStorage.getItem("author_email")}).then(re=>{
             this.avatar_url=re.data
           })
-          this.$axios.post('/server/C_User/getMyRelease',{email:sessionStorage.getItem("username")}).then(re=>{
+          this.$axios.post('/server/C_User/getMyRelease',{email:author}).then(re=>{
             this.articles=re.data
           })
-          this.$axios.post('/server/C_User/judgeStar',{currentUser:sessionStorage.getItem("username"),param:author}).then(re=>{
-            console.log(re.data)
-            if(re.data){
-              this.follow_text='取消关注'
-            }
-            else{
-              this.follow_text='立即关注'
-            }
-          })
+          var current=sessionStorage.getItem("username")
+          if(current==null || current==''){
+            this.isOn=false
+          }
+          else {
+            this.$axios.post('/server/C_User/judgeStar',{currentUser:sessionStorage.getItem("username"),param:author}).then(re=>{
+              if(re.data){
+                this.follow_text='取消关注'
+              }
+              else{
+                this.follow_text='立即关注'
+              }
+            })
+          }
         }
       },
       data(){
@@ -151,11 +156,16 @@
             article_begin:0,//当前页面的文章开始下标
             show_page_nums:20,//一个页面总共可以显示多少条信息
             current_page:1,//当前是第几页
-            follow_text:''
+            follow_text:'立即关注',
+            isOn:true
           }
       },
       methods:{
         follow(){
+          if(!this.isOn){
+            this.askLoginOrRegister('login')
+            return
+          }
           if(this.follow_text=='立即关注'){
             this.$axios.post('/server/C_User/starUser',{currentUser:sessionStorage.getItem("username"),param:this.formValidate.email}).then(re=>{
             })
@@ -206,6 +216,10 @@
             this.login.blur_num=0
           }
           this.$refs.menu.getUser()
+          var current=sessionStorage.getItem("username")
+          if(current==null || current==''){
+            this.isOn=false
+          }
         }
       }
     }
