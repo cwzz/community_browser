@@ -24,7 +24,7 @@
           <Row>
             <Col span="3">
               <Row style="text-align: center">
-                <img style="width:40px" v-bind:src="this.user_photo">
+                <img style="width:40px;cursor: pointer" v-bind:data-id="this.author_id" v-bind:src="this.author_photo" @click="jumpToPersonal()">
               </Row>
               <Row style="text-align: center">
                 <span>本文作者</span>
@@ -32,7 +32,7 @@
             </Col>
             <Col span="3">
               <Row style="margin-top:16px;text-align: center">
-                <span> &nbsp;{{this.username}}</span>
+                <span> &nbsp;{{this.author_name}}</span>
               </Row>
               <Row style="text-align: center">
                 <Time v-bind:time="this.publish_time" :interval="1"/>
@@ -91,7 +91,7 @@
         <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
         <div style="margin-bottom: 15px">
           <Row>
-            <Col span="2"><img style="width:50px;padding-left: 10px" v-bind:src="this.user_photo"></Col>
+            <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal()"></Col>
             <Col span="22">
               <div id="editor">
                 <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
@@ -111,7 +111,7 @@
             <Card style="margin-bottom:15px">
               <Row>
                 <Col span="2">
-                  <img style="width:40px" v-bind:src="comment.user_photo">
+                  <img style="width:40px;cursor: pointer;" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal()">
                 </Col>
                 <Col span="20">
                   <Row>
@@ -163,10 +163,12 @@
       data(){
           return {
             author_id:'',
+            author_photo:'',
+            author_name:'',
             user_id:'',
-            post_id:'',
-            username:'',
+            user_name:'',
             user_photo:'',
+            post_id:'',
             starNum:0,
             commentNum:0,
             accessNum:0,
@@ -222,6 +224,7 @@
             let comments=data.remark_content;
             for(let i=0;i<comments.length;i++) {
               this.total_comments.push({
+                user_id:comments[i].reviewer,
                 user_photo: comments[i].review_img,
                 user_name: comments[i].nickname,
                 time: comments[i].remark_time,
@@ -246,15 +249,21 @@
           });
           await this.$axios.post('/server/getUserInfo',{email:this.author_id}).then(re=>{
             let data=re.data;
-            this.username=data.nickname;
-            this.user_photo=data.imageUrl;
+            this.author_name=data.nickname;
+            this.author_photo=data.imageUrl;
             this.starNum=data.interestUserNums;
             this.commentNum=Math.round(Math.random()*50)+50;
             this.accessNum=Math.round(Math.random()*50)+50;
             this.browseNum=Math.round(Math.random()*50)+50;
             this.publishNum=data.releasedNum;
             this.collectNum=data.collectPostNums;
-            console.log(this.username+" "+this.user_photo+" "+this.starNum+" "+this.commentNum+" "+this.accessNum+" "+this.browseNum+" "+this.publishNum+" "+this.collectNum)
+          }).catch((err)=>{
+            console.log("读取用户信息失败");
+          });
+          await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
+            let data=re.data;
+            this.user_name=data.nickname;
+            this.user_photo=data.imageUrl;
           }).catch((err)=>{
             console.log("读取用户信息失败");
           });
@@ -278,11 +287,11 @@
           let time=(new Date()).getTime();
           let data={
               user_photo:this.user_photo,
-              user_name:this.username,
+              user_name:this.user_name,
               time:time,
               content:comment
             };
-          console.log(this.username);
+          console.log(this.user_name);
           this.total_comments.unshift(data);
           this.changePage(1);
           this.$axios.post('/server/post/remark',{post_id:this.post_id,reviewer:this.user_id,remark_content:comment}).catch((err)=>{
@@ -307,6 +316,12 @@
               console.log("收藏帖子错误");
             });
           }
+        },
+        jumpToPersonal(){
+          let user_id=$(this).data("id");
+          console.log(user_id);
+          sessionStorage.setItem("author_email",user_id);
+          window.location.href='/author';
         },
         //判断该打开login窗口还是register窗口,或者关闭该窗口
         askLoginOrRegister(frame){
