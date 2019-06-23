@@ -12,8 +12,6 @@
             <Divider style="margin-top: 35px"/>
             <table  style="width: 100%" id="articles">
               <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <!--<td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>-->
-                <!--<td style="width: 4%" v-else><Icon type="md-document" /></td>-->
                 <td>
                   <img :src=article.img  style="width: 50px;height: 50px;">
                 </td>

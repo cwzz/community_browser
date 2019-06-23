@@ -67,12 +67,12 @@
           this.$el.parentNode.scrollTop = 0;
         }
         if(this.category_name=='全部'){
-          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
             this.articles=re.data
           })
         }
         else if(sessionStorage.getItem("label")==0){
-          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
             this.articles=re.data
           })
         }
@@ -336,7 +336,7 @@
             this.tag_name=tag
           }
           if(this.category_name=='全部'){
-            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
               this.current_page=1
@@ -344,7 +344,7 @@
             })
           }
           else if(sessionStorage.getItem("label")==0){
-            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
               this.current_page=1
