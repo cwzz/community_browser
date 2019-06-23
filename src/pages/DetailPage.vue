@@ -24,7 +24,7 @@
           <Row>
             <Col span="3">
               <Row style="text-align: center">
-                <img style="width:40px" v-bind:src="this.user_photo">
+                <img style="width:40px;cursor: pointer" v-bind:data-id="this.author_id" v-bind:src="this.user_photo" @click="jumpToPersonal()">
               </Row>
               <Row style="text-align: center">
                 <span>本文作者</span>
@@ -91,7 +91,7 @@
         <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
         <div style="margin-bottom: 15px">
           <Row>
-            <Col span="2"><img style="width:50px;padding-left: 10px" v-bind:src="this.user_photo"></Col>
+            <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.author_id" @click="jumpToPersonal()"></Col>
             <Col span="22">
               <div id="editor">
                 <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
@@ -111,7 +111,7 @@
             <Card style="margin-bottom:15px">
               <Row>
                 <Col span="2">
-                  <img style="width:40px" v-bind:src="comment.user_photo">
+                  <img style="width:40px;cursor: pointer;" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal()">
                 </Col>
                 <Col span="20">
                   <Row>
@@ -209,8 +209,8 @@
         },
         async getData(){
           this.user_id=sessionStorage.getItem("username");
-          this.post_id=sessionStorage.getItem("post_detail_id");
-          // this.post_id="20190623120005wx8339459";
+          // this.post_id=sessionStorage.getItem("post_detail_id");
+          this.post_id="20190623120005wx8339459";
           await this.$axios.post('/server/post/readArticle',{postID:this.post_id}).then(re=>{
             let data=re.data;
             this.title=data.postTitle;
@@ -222,6 +222,7 @@
             let comments=data.remark_content;
             for(let i=0;i<comments.length;i++) {
               this.total_comments.push({
+                user_id:comments[i].reviewer,
                 user_photo: comments[i].review_img,
                 user_name: comments[i].nickname,
                 time: comments[i].remark_time,
@@ -307,6 +308,12 @@
               console.log("收藏帖子错误");
             });
           }
+        },
+        jumpToPersonal(){
+          let user_id=$(this).data("id");
+          console.log(user_id);
+          sessionStorage.setItem("author_email",user_id);
+          window.location.href='/author';
         },
         //判断该打开login窗口还是register窗口,或者关闭该窗口
         askLoginOrRegister(frame){
