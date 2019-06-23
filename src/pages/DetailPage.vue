@@ -24,7 +24,7 @@
           <Row>
             <Col span="3">
               <Row style="text-align: center">
-                <img style="width:40px;cursor: pointer" v-bind:data-id="this.author_id" v-bind:src="this.author_photo" @click="jumpToPersonal()">
+                <img style="width:40px;cursor: pointer" v-bind:data-id="this.author_id" v-bind:src="this.author_photo" @click="jumpToPersonal(author_id)">
               </Row>
               <Row style="text-align: center">
                 <span>本文作者</span>
@@ -91,7 +91,7 @@
         <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
         <div style="margin-bottom: 15px">
           <Row>
-            <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal()"></Col>
+            <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal(user_id)"></Col>
             <Col span="22">
               <div id="editor">
                 <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
@@ -111,7 +111,7 @@
             <Card style="margin-bottom:15px">
               <Row>
                 <Col span="2">
-                  <img style="width:40px;cursor: pointer;" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal()">
+                  <img style="width:40px;cursor: pointer;" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal(comment.user_id)">
                 </Col>
                 <Col span="20">
                   <Row>
@@ -151,7 +151,7 @@
         Editorbar,
         Menu,Login,Register,Forget,
       },
-      mounted(){
+      async mounted(){
         // this.$refs.menu.active_index=2;
         // this.comment_count=this.total_comments.length;
         // if(this.comment_count<this.page_size){
@@ -159,6 +159,71 @@
         // }else{
         //   this.show_comments=this.total_comments.slice(0,this.page_size);
         // }
+
+          this.user_id=sessionStorage.getItem("username");
+          this.post_id=sessionStorage.getItem("post_detail_id");
+          // this.post_id="20190623120005wx8339459";
+          await this.$axios.post('/server/post/readArticle',{postID:this.post_id}).then(re=>{
+            let data=re.data;
+            this.title=data.postTitle;
+            this.author_id=data.author;
+            this.first_tag=data.postCategory;
+            this.second_tag=data.postTag;
+            this.content=data.content;
+            this.publish_time=data.publish_time;
+            let comments=data.remark_content;
+            for(let i=0;i<comments.length;i++) {
+              this.total_comments.push({
+                user_id:comments[i].reviewer,
+                user_photo: comments[i].review_img,
+                user_name: comments[i].nickname,
+                time: comments[i].remark_time,
+                content: comments[i].remark_content
+              });
+            }
+          }).catch((err)=>{
+            console.log("读取文章内容失败");
+          });
+          await this.$axios.post('/server/C_User/judgeCollect',{currentUser:this.user_id,param:this.post_id}).then(re=>{
+            if(re.data){
+              this.isStar=true;
+              this.tooltip='取消收藏';
+              this.status='已收藏';
+              this.style='cursor:pointer;color:darkred';
+            }else{
+              this.isStar=false;
+              this.tooltip='收藏该帖';
+              this.status='未收藏';
+              this.style='cursor:pointer;color:rgb(70, 76, 91)';
+            }
+          });
+          await this.$axios.post('/server/getUserInfo',{email:this.author_id}).then(re=>{
+            let data=re.data;
+            this.author_name=data.nickname;
+            this.author_photo=data.imageUrl;
+            this.starNum=data.interestUserNums;
+            this.commentNum=Math.round(Math.random()*50)+50;
+            this.accessNum=Math.round(Math.random()*50)+50;
+            this.browseNum=Math.round(Math.random()*50)+50;
+            this.publishNum=data.releasedNum;
+            this.collectNum=data.collectPostNums;
+          }).catch((err)=>{
+            console.log("读取用户信息失败");
+          });
+          await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
+            let data=re.data;
+            this.user_name=data.nickname;
+            this.user_photo=data.imageUrl;
+          }).catch((err)=>{
+            console.log("读取用户信息失败");
+          });
+          this.isShow=false;
+          if(this.total_comments.length<this.page_size){
+            this.show_comments=this.total_comments;
+          }else{
+            this.show_comments=this.total_comments.slice(0,this.page_size);
+          }
+
       },
       data(){
           return {
@@ -317,12 +382,13 @@
             });
           }
         },
-        jumpToPersonal(){
-          let user_id=$(this).data("id");
-          console.log(user_id);
+        jumpToPersonal(user_id){
+          // console.log(user_id);
+          // var user_id=$(this).attr("src");
+          // console.log(user_id);
           sessionStorage.setItem("author_email",user_id);
           window.location.href='/author';
-        },
+          },
         //判断该打开login窗口还是register窗口,或者关闭该窗口
         askLoginOrRegister(frame){
           if(frame=='login'){
@@ -353,7 +419,7 @@
         }
       },
       created(){
-          this.getData();
+          //this.getData();
       }
     }
 </script>

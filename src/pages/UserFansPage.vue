@@ -18,7 +18,7 @@
                     <img :src=article.img  style="width: 50px;height: 50px;">
                   </td>
                   <td style="width: 76%" @click="chooseArticle(article)">{{article.name}}</td>
-                  <td style="width: 20%" v-if="article.isFollow">
+                  <td style="width: 20%" v-if="article.follow">
                     <Button @click.native="cancelFollow(article,index)">取消关注</Button>
                   </td>
                   <td style="width: 20%" v-else>
@@ -50,6 +50,7 @@
         this.$refs.head.active_index=4;
         this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
           this.articles=re.data
+          console.log(re.data)
         })
       },
       data(){
@@ -64,7 +65,7 @@
       },
       methods:{
         async follow(article,index){
-          this.articles[index].isFollow=true
+          this.articles[index].follow=true
           await this.$axios.post('/server/C_User/starUser',{currentUser:sessionStorage.getItem("username"),param:article.email}).then(re=>{
           })
           this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
@@ -72,7 +73,7 @@
           })
         },
         async cancelFollow(article,index){
-          this.articles[index].isFollow=false
+          this.articles[index].follow=false
           await this.$axios.post('/server/C_User/cancelStarUser',{currentUser:sessionStorage.getItem("username"),param:article.email}).then(re=>{
           })
           this.$axios.post('/server/C_User/getMyFans',{email:sessionStorage.getItem("username")}).then(re=>{
