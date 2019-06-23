@@ -12,7 +12,7 @@ import UserFollowPage from '@/pages/UserFollowPage'
 import UserFansPage from '@/pages/UserFansPage'
 import UserInfoPage from '@/pages/UserInfoPage'
 import UserMessagePage from "@/pages/UserMessagePage"
-
+import AuthorInfoPage from '@/pages/AuthorInfoPage'
 Vue.use(Router)
 
 export default new Router({
@@ -74,10 +74,16 @@ export default new Router({
       component:UserMessagePage
     },
     {
+      path:'/author',
+      name:'AuthorInfoPage',
+      component:AuthorInfoPage
+    },
+    {
       path:'/test',
       name:'TestForm',
       component:TestForm
     },
+
 
   ]
 })
