@@ -10,26 +10,29 @@
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
             <span style="font-size: 18px;font-weight: bold;position: absolute">我发布的</span>
             <Divider style="margin-top: 35px"/>
-            <table style="width: 100%" id="article_title">
-              <tr style="width: 100%">
-                <th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>
-                <!--<th style="width: 20%">作者</th>-->
-                <th style="width: 20%">回复/浏览</th>
-              </tr>
-            </table>
-            <table  style="width: 100%" id="articles">
-              <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
-                <td style="width: 4%" v-else><Icon type="md-document" /></td>
-                <td style="width: 76%">{{article.title}}</td>
-                <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
-              </tr>
-              <tr>
-                <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
-                  <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
-                </td>
-              </tr>
-            </table>
+            <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">暂无发布的文章</div>
+            <div v-else>
+              <table style="width: 100%" id="article_title">
+                <tr style="width: 100%">
+                  <th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>
+                  <!--<th style="width: 20%">作者</th>-->
+                  <th style="width: 20%">回复/浏览</th>
+                </tr>
+              </table>
+              <table  style="width: 100%" id="articles">
+                <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
+                  <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
+                  <td style="width: 4%" v-else><Icon type="md-document" /></td>
+                  <td style="width: 76%">{{article.title}}</td>
+                  <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
+                </tr>
+                <tr>
+                  <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
+                    <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
+                  </td>
+                </tr>
+              </table>
+            </div>
           </Content>
         </Layout>
       </Layout>
@@ -47,6 +50,9 @@
 
     mounted(){
       this.$refs.head.active_index=4;
+      this.$axios.post('/server/C_User/getMyRelease',{email:sessionStorage.getItem("username")}).then(re=>{
+        this.articles=re.data
+      })
     },
     data(){
       return{
@@ -249,7 +255,8 @@
     },
     methods:{
       chooseArticle(article){
-        this.$Message.success(article.title)
+        sessionStorage.setItem('post_detail_id',article.postId)
+        this.$router.push('/detail')
       },
       //判断在当前页哪些文章可以显示
       canShow(index){

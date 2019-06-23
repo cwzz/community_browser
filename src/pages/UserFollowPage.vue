@@ -10,22 +10,25 @@
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
             <span style="font-size: 18px;font-weight: bold;position: absolute">我关注的</span>
             <Divider style="margin-top: 35px"/>
-            <table  style="width: 100%" id="articles">
-              <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <td>
-                  <img :src=article.img  style="width: 50px;height: 50px;">
-                </td>
-                <td style="width: 76%">{{article.name}}</td>
-                <td style="width: 20%">
-                  <Button @click.native="cancelFollow()">取消关注</Button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
-                  <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
-                </td>
-              </tr>
-            </table>
+            <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">暂无关注的博主</div>
+            <div v-else>
+              <table  style="width: 100%" id="articles">
+                <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
+                  <td>
+                    <img :src=article.img  style="width: 50px;height: 50px;">
+                  </td>
+                  <td style="width: 76%">{{article.name}}</td>
+                  <td style="width: 20%">
+                    <Button @click.native="cancelFollow()">取消关注</Button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
+                    <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
+                  </td>
+                </tr>
+              </table>
+            </div>
           </Content>
         </Layout>
       </Layout>
@@ -41,6 +44,9 @@
       components:{Menu,Main},
       mounted(){
         this.$refs.head.active_index=4;
+        this.$axios.post('/server/C_User/getMyStarUser',{email:sessionStorage.getItem("username")}).then(re=>{
+          this.articles=re.data
+        })
       },
       data(){
         return{

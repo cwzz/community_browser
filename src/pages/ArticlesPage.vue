@@ -362,7 +362,8 @@
         },
         //选择某篇文章，需要页面跳转
         chooseArticle(article){
-          this.$Message.success(article.author)
+          sessionStorage.setItem("post_detail_id",article.postId)
+          this.$router.push('/detail')
         },
         //判断在当前页哪些文章可以显示
         canShow(index){
