@@ -10,16 +10,8 @@
           <Content :style="{paddingLeft: '80px',paddingTop:'10px', minHeight: '280px', background: '#fff'}">
             <span style="font-size: 18px;font-weight: bold;position: absolute">我的粉丝</span>
             <Divider style="margin-top: 35px"/>
-            <!--<table style="width: 100%" id="article_title">-->
-              <!--<tr style="width: 100%">-->
-                <!--<th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>-->
-                <!--&lt;!&ndash;<th style="width: 20%">作者</th>&ndash;&gt;-->
-                <!--<th style="width: 20%">回复/浏览</th>-->
-              <!--</tr>-->
-            <!--</table>-->
             <table  style="width: 100%" id="articles">
               <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-
                 <td>
                   <img :src=article.img  style="width: 50px;height: 50px;">
                 </td>
@@ -28,7 +20,7 @@
                   <Button @click.native="cancelFollow()">取消关注</Button>
                 </td>
                 <td style="width: 20%" v-else>
-                  <Button @click.native="cancelFollow()">+关注</Button>
+                  <Button @click.native="follow()">+关注</Button>
                 </td>
 
               </tr>
@@ -60,11 +52,9 @@
           tag_name:'',//标签名称
           articles:[
             {
-              tag:'通知公告',
               img:'/static/img/elephant.d0491c9.png',
               name:'Jane',
               isFollow:false,
-              content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
             },
             {
               tag:'通知公告',
@@ -179,6 +169,9 @@
         }
       },
       methods:{
+        follow(){
+
+        },
         cancelFollow(){
 
         },

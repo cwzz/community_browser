@@ -40,9 +40,15 @@
           this.username=username
           this.login=true
           //同时设置头像
-          this.$axios.post('/server/getImageUrl',{email:username}).then(re=>{
-            this.avatar_url=re.data
-          })
+          if(sessionStorage.getItem("avatar_url")==null || sessionStorage.getItem("avatar_url")==''){
+            this.$axios.post('/server/getImageUrl',{email:sessionStorage.getItem("username")}).then(re=>{
+              this.avatar_url=re.data
+              sessionStorage.setItem("avatar_url",re.data)
+            })
+          }
+          else{
+            this.avatar_url=sessionStorage.getItem("avatar_url")
+          }
         }
       },
       data(){
@@ -105,6 +111,8 @@
         },
         logout(){
           sessionStorage.setItem("username",'')
+          sessionStorage.setItem("user",'')
+          sessionStorage.setItem("avatar_url",'')
           this.getUser()
           var path=this.$route.path
           if(path.indexOf('articles')<0&&path.indexOf('detail')<0&&path.indexOf('home')<0){

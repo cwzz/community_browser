@@ -3,7 +3,7 @@
     <Menu ref="head"></Menu>
     <Layout>
       <Layout>
-        <Sider>
+        <Sider style="background-color: white">
           <Main ref="test"></Main>
         </Sider>
         <Layout>
@@ -63,14 +63,24 @@
                       </tr>
                     </table>
                   </div>
-                  <div style="width: 120px;float: left" @click="changeAvatar">
-                    <div style="width: 120px;height: 120px">
-                      <img id="image" src="../assets/homeImg/3.jpg" style="margin-top:10px; margin-left:10px;height: 100px;width: 100px;border-radius: 50%;position:absolute; z-index: 2">
-                      <div id="change_avatar" style="width: 120px;height: 120px;background-color: rgba(255,255,255,0.5);position: absolute;font-size: 20px;text-align: center;padding-top: 40px;-webkit-text-fill-color: #515a6e">
-                        <Icon type="md-add" size="45"/>
+                  <Upload
+                    :before-upload="handleUpload"
+                    :data="new_avatar"
+                    :format="['jpg','jpeg','png']"
+                    :on-format-error="handleFormatError"
+                    :on-success="handleSuccess"
+                    action="/server/modifyImage"
+                    :show-upload-list="false"
+                  >
+                    <div style="width: 120px;float: left">
+                      <div style="width: 120px;height: 120px">
+                        <img id="image" :src="avatar_url" style="margin-top:10px; margin-left:10px;height: 100px;width: 100px;border-radius: 50%;position:absolute; z-index: 2">
+                        <div id="change_avatar" style="width: 120px;height: 120px;background-color: rgba(255,255,255,0.5);position: absolute;font-size: 20px;text-align: center;padding-top: 40px;-webkit-text-fill-color: #515a6e">
+                          <Icon type="md-add" size="45"/>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Upload>
                 </div>
                 <div style="width: 80%;height: 2px;background-color: #f8f8f9;margin-left: 7%;margin-bottom: 20px"></div>
                 <div class="back">
@@ -82,7 +92,7 @@
                       </tr>
                       <tr>
                         <div>兴趣标签：</div>
-                        <td>{{formValidate.interest.toString()}}</td>
+                        <td>{{formValidate.interest.toString().substr(1)}}</td>
                       </tr>
                     </table>
                   </div>
@@ -119,12 +129,12 @@
         height:'',
         isEdit:false,
         formValidate: {
-          nickname:'王旭爸爸',
-          email: 'wx8339459@163.com',
-          interest: ['法律咨询'],
-          gender: '男',
-          birth:'1998-02-01',
-          desc: '王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸王旭爸爸'
+          nickname:'',
+          email: '',
+          interest: [],
+          gender: '',
+          birth:'',
+          desc: ''
         },
         ruleValidate: {
           nickname: [
@@ -137,36 +147,84 @@
           city: [
             { required: true, message: 'Please select the city', trigger: 'change' }
           ],
-        }
+        },
+        new_avatar:{
+          email:'',
+          file:''
+        },
+        avatar_url:'',
       }
     },
     mounted(){
       this.$refs.head.active_index=4;
       this.height=window.innerHeight
+      this.$axios.post('/server/getUserInfo',{email:sessionStorage.getItem("username")}).then(re=>{
+        this.formValidate=re.data
+      })
+      if(sessionStorage.getItem("avatar_url")==null || sessionStorage.getItem("avatar_url")==''){
+        this.$axios.post('/server/getImageUrl',{email:sessionStorage.getItem("username")}).then(re=>{
+          this.avatar_url=re.data
+          sessionStorage.setItem("avatar_url",re.data)
+        })
+      }
+      else{
+        this.avatar_url=sessionStorage.getItem("avatar_url")
+      }
     },
     methods:{
-      changeAvatar(){
-
-      },
-      modifyPic(){
-
-      },
-      modifyInfo(){
-
+      getDate(date){
+        var year=date.getFullYear()
+        var month=date.getMonth()+1
+        if(month<10){
+          month='0'+month
+        }
+        var day=date.getDate()
+        if(day<10){
+          day='0'+day
+        }
+        return year+'-'+month+'-'+day
       },
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
-            this.isEdit=false
-          } else {
-            this.$Message.error('Fail!');
+            this.formValidate.birth=this.getDate(this.formValidate.birth)
+            this.$axios.post('/server/modifyUserInfo',this.formValidate).then(re=>{
+              if(re.data=='Success'){
+                this.isEdit=false
+                this.$Message.success('修改信息成功')
+                this.$axios.post('/server/getUserInfo',{email:sessionStorage.getItem("username")}).then(re=>{
+                  this.formValidate=re.data
+                  sessionStorage.setItem("user",JSON.stringify(re.data))
+                  this.$refs.test.getUser()
+                })
+              }
+              else{
+                this.$Message.error('网络问题出现错误，请稍后重试')
+              }
+            })
+
           }
         })
       },
       changeEdit(){
         this.isEdit=true
-      }
+      },
+      handleUpload(file){
+        this.new_avatar.email=sessionStorage.getItem("username")
+        this.new_avatar.file=file
+      },
+      handleFormatError (file) {
+        this.$Notice.warning({
+          title: '上传的图片格式不对',
+          desc: '文件' + file.name + '的格式不合规，请选择jpg图片或png图片.'
+        });
+      },
+      handleSuccess (res, file) {
+        this.$Message.success('头像修改成功')
+        this.avatar_url=res
+        sessionStorage.setItem("avatar_url",res)
+        this.$refs.head.getUser()
+      },
     }
   }
 </script>
