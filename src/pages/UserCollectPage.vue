@@ -13,14 +13,11 @@
             <table style="width: 100%" id="article_title">
               <tr style="width: 100%">
                 <th style="width: 80%">{{category_name}}&nbsp{{tag_name}}</th>
-                <!--<th style="width: 20%">作者</th>-->
                 <th style="width: 20%">回复/浏览</th>
               </tr>
             </table>
             <table  style="width: 100%" id="articles">
               <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-                <!--<td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>-->
-                <!--<td style="width: 4%" v-else><Icon type="md-document" /></td>-->
                 <td style="width: 76%">{{article.title}}</td>
                 <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
               </tr>

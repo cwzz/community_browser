@@ -66,7 +66,21 @@
           document.documentElement.scrollTop = document.body.scrollTop = 0;
           this.$el.parentNode.scrollTop = 0;
         }
-
+        if(this.category_name=='全部'){
+          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+            this.articles=re.data
+          })
+        }
+        else if(sessionStorage.getItem("label")==0){
+          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+            this.articles=re.data
+          })
+        }
+        else{
+          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
+            this.articles=re.data
+          })
+        }
       },
       data(){
           return{
@@ -321,10 +335,30 @@
             this.category_name=category
             this.tag_name=tag
           }
-          //改articles
-          //改current_page
-          this.current_page=1
-          this.article_begin=0;
+          if(this.category_name=='全部'){
+            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+              this.articles=re.data
+              //改current_page
+              this.current_page=1
+              this.article_begin=0;
+            })
+          }
+          else if(sessionStorage.getItem("label")==0){
+            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'all'}).then(re=>{
+              this.articles=re.data
+              //改current_page
+              this.current_page=1
+              this.article_begin=0;
+            })
+          }
+          else{
+            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
+              this.articles=re.data
+              //改current_page
+              this.current_page=1
+              this.article_begin=0;
+            })
+          }
         },
         //选择某篇文章，需要页面跳转
         chooseArticle(article){

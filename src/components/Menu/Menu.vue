@@ -14,7 +14,10 @@
             <Button style="display: none"></Button>
           </ButtonGroup>
         </div>
-        <Avatar v-if="login" :src=avatar_url style="margin-top: 65px;float: right;margin-right: 50px" />
+        <div v-if="login" style="float: right;padding-top: 60px;">
+          <Avatar :src=avatar_url size="large" />
+          <p id="out_frame" style="display: inline" @click="logout"><Icon type="md-exit" size="25" id="out"/><span>登出</span></p>
+        </div>
         <div v-else style="float: right;padding-top: 70px;">
           <button class="login" @click="askForFrame('login')">登录</button>
           <button class="login" @click="askForFrame('register')">注册</button>
@@ -30,7 +33,7 @@
         name: "Menu",
       mounted(){
         var username=sessionStorage.getItem("username")
-        if(username==null){
+        if(username==null || username==''){
           this.login=false
         }
         else{
@@ -46,7 +49,7 @@
         return{
           username:'',
           active_index:1,
-          avatar_url:'https://i.loli.net/2017/08/21/599a521472424.jpg',
+          avatar_url:'',
           login:''
         }
       },
@@ -85,25 +88,43 @@
         },
         getUser(){
           var username=sessionStorage.getItem("username")
-          console.log(username+" in method")
-          if(username==null){
+          if(username==null || username==''){
             this.login=false
           }
           else{
             this.username=username
             this.login=true
             //同时设置头像
+            this.$axios.post('/server/getImageUrl',{email:username}).then(re=>{
+              this.avatar_url=re.data
+            })
           }
         },
         askForFrame(para){
           this.$emit('showFrame',para)
         },
+        logout(){
+          sessionStorage.setItem("username",'')
+          this.getUser()
+          var path=this.$route.path
+          if(path.indexOf('articles')<0&&path.indexOf('detail')<0&&path.indexOf('home')<0){
+            this.$router.push('/home')
+          }
+        }
       },
       props:['frame']
     }
 </script>
 
 <style scoped>
+  #out:hover{
+    color: #e64919;
+  }
+
+  #out_frame:hover{
+    cursor: pointer;
+    -webkit-text-fill-color: #e64919;
+  }
   .menu_default{
     font-size: 18px;
     font-weight: bold;
