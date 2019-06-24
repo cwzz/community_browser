@@ -224,6 +224,7 @@
         this.avatar_url=res
         sessionStorage.setItem("avatar_url",res)
         this.$refs.head.getUser()
+        this.$refs.test.getUser()
       },
     }
   }
