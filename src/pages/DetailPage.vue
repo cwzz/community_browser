@@ -319,9 +319,9 @@
         },
         jumpToPersonal(){
           let user_id=$(this).data("id");
-          console.log(user_id);
           sessionStorage.setItem("author_email",user_id);
-          window.location.href='/author';
+          // window.location.href='/author';
+          console.log(user_id);
         },
         //判断该打开login窗口还是register窗口,或者关闭该窗口
         askLoginOrRegister(frame){

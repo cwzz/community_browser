@@ -101,6 +101,7 @@
       components:{Menu,Login,Register,Forget},
       mounted(){
         var author=sessionStorage.getItem("author_email")
+        console.log('ppppppp'+author)
         if(author==null || author==''){
           this.$router.push('/home')
           this.$Message.error('不能直接跳转该页面')
