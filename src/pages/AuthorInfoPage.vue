@@ -3,7 +3,7 @@
     <Login style="position: absolute;z-index: 2" v-if="login.showLogin" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Login>
     <Register style="position: absolute;z-index: 2" v-if="login.showRegister" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Register>
     <Forget style="position: absolute;z-index: 2" v-if="login.showForget" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Forget>
-    <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
+    <div style="background-color: #FFFFFF;padding: 10px;min-height: 800px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
       <Menu ref="menu" v-bind:frame="login.frame" v-on:showFrame="askLoginOrRegister($event)"></Menu>
       <p class="title">个人信息<span style="margin-left: 20px"><button id="star" @click="follow()">{{follow_text}}</button></span></p>
       <div style="width: 80%;margin-left: 10%;margin-right: 10%;background-color: #dcdee2;height: 1px;margin-top: 5px;margin-bottom: 10px"></div>

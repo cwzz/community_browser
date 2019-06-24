@@ -20,9 +20,12 @@
               </table>
               <table  style="width: 100%" id="articles">
                 <tr v-for="(article,index) in articles" class="page" v-if="canShow(index)">
-                  <td style="width: 20%;text-align: center">1998.02.02 16:42:00</td>
-                  <td style="width: 4%"><Icon type="ios-mail-open-outline" /></td>
-                  <td style="width: 76%;word-wrap: break-word">{{article.title}}</td>
+                  <td style="width: 20%;text-align: center;font-weight: bold" v-if="!article.isRead">{{article.time}}</td>
+                  <td style="width: 20%;text-align: center" v-else>{{article.time}}</td>
+                  <td style="width: 4%" v-if="!article.isRead"><Icon type="ios-mail-outline" /></td>
+                  <td style="width: 4%" v-if="article.isRead"><Icon type="ios-mail-open-outline" /></td>
+                  <td style="width: 76%;word-wrap: break-word;font-weight: bold" v-if="!article.isRead">{{article.event}}</td>
+                  <td style="width: 76%;word-wrap: break-word" v-else>{{article.event}}</td>
                 </tr>
                 <tr>
                   <td colspan="3" style="background-color: #f8f8f9;padding: 7px">
@@ -46,6 +49,9 @@
     components:{Main,Menu},
     mounted(){
       this.$refs.head.active_index=4;
+      this.$axios.post('/server/Message/showMessage',{email:sessionStorage.getItem("username")}).then(re=>{
+        this.articles=re.data
+      })
     },
     data(){
       return{
@@ -53,194 +59,16 @@
         tag_name:'',//标签名称
         articles:[
           {
-            // set_top:true,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
+            isRead:false,
+            event: '改造农户lead客户发可是对方垃圾哦的啊速度v八九十的女卡呢非常，啊结束呢发v卡省地矿局埃克设计的能否撒vu阿多诺饭卡手动阀空间埃里克森的回复卡萨丁顶顶顶顶顶顶顶顶顶顶顶顶顶',
+            time:'2018.01.01 16:35:26'
           },
           {
-            // set_top:true,
-            tag:'通知公告',
-            title:'2019年细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-          },
-          {
-            // set_top:true,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:true,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:true,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-          },
-          {
-            // set_top:false,
-            tag:'通知公告',
-            title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-            // author:'王旭爸爸',
-            reply:150,
-            view:1200,
-            content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
+            isRead:true,
+            event: '改造农户lead客户发可是对方垃圾哦的啊速度v八九十的女卡呢非常，啊结束呢发v卡省地矿局埃克设计的能否撒vu阿多诺饭卡手动阀空间埃里克森的回复卡萨丁顶顶顶顶顶顶顶顶顶顶顶顶顶',
+            time:'2018.01.01 16:35:26'
           }
-        ],
+          ],
         article_begin:0,//当前页面的文章开始下标
         show_page_nums:20,//一个页面总共可以显示多少条信息
         current_page:1//当前是第几页
