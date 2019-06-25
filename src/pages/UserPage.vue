@@ -1,10 +1,9 @@
 <template>
   <div style="background-color: #FFFFFF;padding: 10px">
 
-    <div id="info" style="width: 240px;height: 200px;padding: 20px; margin-bottom:10px;background-color: rgb(249,249,249)">
+    <div id="info" style="width: 240px;padding: 20px; margin-bottom:10px;background-color: rgb(249,249,249);text-align: center">
       <img :src="avatar_url" style="width: 100px;height: 100px;border-radius: 50%">
-      <span style="vertical-align: top;font-size: 18px;font-weight:bold;position: absolute;width: 100px;padding-top: 20px;margin-left: 17px" >{{user.nickname}}</span>
-      <br>
+      <p style="font-size: 18px;font-weight:bold;width: 200px;margin-top: 10px;word-wrap: break-word;" >{{user.nickname}}</p>
       <div style="margin-top: 10px">
         <table id="fans_table" style="margin: 0 auto">
           <tr>
