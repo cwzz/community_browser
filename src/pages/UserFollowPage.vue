@@ -65,6 +65,8 @@
           this.$axios.post('/server/C_User/getMyStarUser',{email:sessionStorage.getItem("username")}).then(re=>{
             this.articles=re.data
           })
+          sessionStorage.setItem("user",'')
+          this.$refs.test.getUser()
         },
         chooseArticle(article){
           sessionStorage.setItem("author_email",article.email)

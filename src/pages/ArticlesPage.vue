@@ -35,7 +35,7 @@
           <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
             <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
             <td style="width: 4%" v-else><Icon type="md-document" /></td>
-            <td style="width: 56%">{{article.title}}</td>
+            <td style="width: 56%;text-align: left">{{getTitle(article.title)}}</td>
             <td style="width: 20%">{{article.author}}</td>
             <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
           </tr>
@@ -113,203 +113,20 @@
             ],//这就是所有的标签分类数组
             category_name:'全部',//类别名称
             tag_name:'',//标签名称
-            articles:[
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:false,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'aksjdflajsdoivannsgvarsuhgvasdearhfvsuaeghv<br>asdfaksljdflkjas'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-              {
-                set_top:true,
-                tag:'通知公告',
-                title:'2019年《专利代理师资格考试办法》公布，详细报考条件说明！',
-                author:'王旭爸爸',
-                reply:150,
-                view:1200,
-                content:'askdhfasdfkasdhga;skdhgasdnjvbak;sdbkkvgbsdkjfvkaeugbfvjaskdnkjfvaskjdbgkjasdjgkvbagkjsdbvkjjabsdgv'
-              },
-            ],//在当前标签下的文章
+            articles:[],//在当前标签下的文章
             article_begin:0,//当前页面的文章开始下标
             show_page_nums:20,//一个页面总共可以显示多少条信息
             current_page:1//当前是第几页
           }
       },
       methods:{
+        getTitle(title){
+          var result=title
+          if(title.length>55){
+            result=result.substring(0,55)+'...'
+          }
+          return result
+        },
         //根据类别和标签来判断标签所属的class
         getClass(category,tag){
           if((this.category==category)&&(this.tag==tag)){
@@ -343,7 +160,7 @@
               this.article_begin=0;
             })
           }
-          else if(sessionStorage.getItem("label")==0){
+          else if(this.tag_name==''){
             this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
