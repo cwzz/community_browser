@@ -118,6 +118,7 @@
           if(path.indexOf('articles')<0&&path.indexOf('detail')<0&&path.indexOf('home')<0){
             this.$router.push('/home')
           }
+          this.$router.go(0)
         }
       },
       props:['frame']
