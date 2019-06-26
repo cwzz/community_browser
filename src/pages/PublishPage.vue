@@ -51,6 +51,10 @@
               label: '法律咨询',
               children: [
                 {
+                  value: '信息咨询',
+                  label: '信息咨询'
+                }
+                ,{
                   value: '求助/讨论',
                   label: '求助/讨论'
                 },
@@ -157,6 +161,10 @@
                   label: '专利保护'
                 },
                 {
+                  value: '专利撰写',
+                  label: '专利撰写'
+                },
+                {
                   value: '专利知识普及',
                   label: '专利知识普及'
                 },
@@ -165,7 +173,11 @@
                   label: '专利转让'
                 },
                 {
-                  value: '专利实物',
+                  value: '专利实务',
+                  label: '专利实务'
+                },
+                {
+                  value: '检索分析',
                   label: '检索分析'
                 },
                 {
@@ -269,9 +281,11 @@
           await this.$axios.post('/server/post/createPostID',{author:user_id}).then(re=>{
             this.temp_article_id=re.data
           });
+          console.log(this.temp_article_id);
           let imgs=$(".v-show-content").find("img");
           for(let i=0;i<imgs.length;i++){
             let fileName=this.temp_article_id+i;
+            console.log(fileName+" "+this.temp_article_id);
             let res=await this.$axios.post('/server/post/changeBaseToUrl',{base64:imgs[i].getAttribute("src"),filename:fileName,projectID:this.temp_article_id}).catch((err) =>{
               console.log("上传图片失败");
             });
