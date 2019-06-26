@@ -14,7 +14,7 @@
         <p style="font-weight: bold;font-size: 32px;color: #464c5b;margin-bottom: 15px">
           <Row>
             <Col span="21">{{title}}</Col>
-            <Col span="3">
+            <Col span="3" v-bind:style="star_style">
               <Tooltip v-bind:content="this.tooltip" style="position: relative;left: 20px;">
                 <Icon v-bind:style="this.style" type="md-heart" @click="starOrCancel()"/>
               </Tooltip>
@@ -92,19 +92,24 @@
             </Col>
           </Row>
         </Card>
-        <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
-        <div style="margin-bottom: 15px">
-          <Row>
-            <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal(user_id)"></Col>
-            <Col span="22">
-            <div id="editor">
-              <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
-            </div>
-            </Col>
-          </Row>
+        <div v-bind:style="comment_style">
+          <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
+          <div style="margin-bottom: 15px">
+            <Row>
+              <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal(user_id)"></Col>
+              <Col span="22">
+              <div id="editor">
+                <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
+              </div>
+              </Col>
+            </Row>
+          </div>
+          <div style="margin-bottom: 30px">
+            <Button type="primary" @click="addComment()" style="position: relative;left: 92%;">提交评论</Button>
+          </div>
         </div>
-        <div style="margin-bottom: 30px">
-          <Button type="primary" @click="addComment()" style="position: relative;left: 92%;">提交评论</Button>
+        <div v-bind:style="tooltip_style">
+          <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">登录之后可以添加回复...</p>
         </div>
         <table id="comments" style="width: 100%">
           <tr style="margin-bottom: 15px">
@@ -156,16 +161,40 @@
       Menu,Login,Register,Forget,
     },
     async mounted(){
-      // this.$refs.menu.active_index=2;
-      // this.comment_count=this.total_comments.length;
-      // if(this.comment_count<this.page_size){
-      //   this.show_comments=this.total_comments;
-      // }else{
-      //   this.show_comments=this.total_comments.slice(0,this.page_size);
-      // }
-      this.user_id=sessionStorage.getItem("username");
       this.post_id=sessionStorage.getItem("post_detail_id");
-      // this.post_id="20190623120005wx8339459";
+      if(sessionStorage.getItem("username")!=""){
+        this.user_id=sessionStorage.getItem("username");
+        await this.$axios.post('/server/C_User/judgeCollect', {
+          currentUser: this.user_id,
+          param: this.post_id
+        }).then(re => {
+          if (re.data) {
+            this.isStar = true;
+            this.tooltip = '取消收藏';
+            this.status = '已收藏';
+            this.style = 'cursor:pointer;color:darkred';
+          } else {
+            this.isStar = false;
+            this.tooltip = '收藏该帖';
+            this.status = '未收藏';
+            this.style = 'cursor:pointer;color:rgb(70, 76, 91)';
+          }
+        });
+        await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
+          let data=re.data;
+          this.user_name=data.nickname;
+          this.user_photo=data.imageUrl;
+        }).catch((err)=>{
+          console.log("读取用户信息失败");
+        });
+        this.comment_style="display:block";
+        this.star_style="display:block";
+        this.tooltip_style="display:none";
+      }else {
+        this.comment_style="display:none";
+        this.star_style="display:none";
+        this.tooltip_style="display:block";
+      }
       await this.$axios.post('/server/post/readArticle',{postID:this.post_id}).then(re=>{
         let data=re.data;
         this.title=data.postTitle;
@@ -187,19 +216,6 @@
       }).catch((err)=>{
         console.log("读取文章内容失败");
       });
-      await this.$axios.post('/server/C_User/judgeCollect',{currentUser:this.user_id,param:this.post_id}).then(re=>{
-        if(re.data){
-          this.isStar=true;
-          this.tooltip='取消收藏';
-          this.status='已收藏';
-          this.style='cursor:pointer;color:darkred';
-        }else{
-          this.isStar=false;
-          this.tooltip='收藏该帖';
-          this.status='未收藏';
-          this.style='cursor:pointer;color:rgb(70, 76, 91)';
-        }
-      });
       await this.$axios.post('/server/getUserInfo',{email:this.author_id}).then(re=>{
         let data=re.data;
         this.author_name=data.nickname;
@@ -210,13 +226,6 @@
         this.browseNum=Math.round(Math.random()*50)+50;
         this.publishNum=data.releasedNum;
         this.collectNum=data.collectPostNums;
-      }).catch((err)=>{
-        console.log("读取用户信息失败");
-      });
-      await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
-        let data=re.data;
-        this.user_name=data.nickname;
-        this.user_photo=data.imageUrl;
       }).catch((err)=>{
         console.log("读取用户信息失败");
       });
@@ -251,6 +260,9 @@
         tooltip:'收藏该帖',
         status:'未收藏',
         style:'cursor:pointer;color:rgb(70, 76, 91)',
+        comment_style:'display:none',
+        star_style:'display:none',
+        tooltip_style:'display:block',
         isShow:true,
         login:{
           showLogin:false,
@@ -277,9 +289,40 @@
         this.show_comments=this.total_comments.slice(start,end);
       },
       async getData(){
-        this.user_id=sessionStorage.getItem("username");
+        if(sessionStorage.getItem("username")!=null){
+          this.user_id=sessionStorage.getItem("username");
+          await this.$axios.post('/server/C_User/judgeCollect', {
+            currentUser: this.user_id,
+            param: this.post_id
+          }).then(re => {
+            if (re.data) {
+              this.isStar = true;
+              this.tooltip = '取消收藏';
+              this.status = '已收藏';
+              this.style = 'cursor:pointer;color:darkred';
+            } else {
+              this.isStar = false;
+              this.tooltip = '收藏该帖';
+              this.status = '未收藏';
+              this.style = 'cursor:pointer;color:rgb(70, 76, 91)';
+            }
+          });
+          await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
+            let data=re.data;
+            this.user_name=data.nickname;
+            this.user_photo=data.imageUrl;
+          }).catch((err)=>{
+            console.log("读取用户信息失败");
+          });
+          this.comment_style="display:block";
+          this.star_style="display:block";
+          this.tooltip_style="display:none";
+        }else {
+          this.comment_style="display:none";
+          this.star_style="display:none";
+          this.tooltip_style="display:block";
+        }
         this.post_id=sessionStorage.getItem("post_detail_id");
-        // this.post_id="20190623120005wx8339459";
         await this.$axios.post('/server/post/readArticle',{postID:this.post_id}).then(re=>{
           let data=re.data;
           this.title=data.postTitle;
@@ -301,19 +344,11 @@
         }).catch((err)=>{
           console.log("读取文章内容失败");
         });
-        await this.$axios.post('/server/C_User/judgeCollect',{currentUser:this.user_id,param:this.post_id}).then(re=>{
-          if(re.data){
-            this.isStar=true;
-            this.tooltip='取消收藏';
-            this.status='已收藏';
-            this.style='cursor:pointer;color:darkred';
-          }else{
-            this.isStar=false;
-            this.tooltip='收藏该帖';
-            this.status='未收藏';
-            this.style='cursor:pointer;color:rgb(70, 76, 91)';
-          }
-        });
+        if(sessionStorage.getItem("username")!=null) {
+
+        }else{
+
+        }
         await this.$axios.post('/server/getUserInfo',{email:this.author_id}).then(re=>{
           let data=re.data;
           this.author_name=data.nickname;
@@ -324,13 +359,6 @@
           this.browseNum=Math.round(Math.random()*50)+50;
           this.publishNum=data.releasedNum;
           this.collectNum=data.collectPostNums;
-        }).catch((err)=>{
-          console.log("读取用户信息失败");
-        });
-        await this.$axios.post('/server/getUserInfo',{email:this.user_id}).then(re=>{
-          let data=re.data;
-          this.user_name=data.nickname;
-          this.user_photo=data.imageUrl;
         }).catch((err)=>{
           console.log("读取用户信息失败");
         });
