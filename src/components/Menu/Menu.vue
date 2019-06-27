@@ -1,10 +1,10 @@
 <template>
     <div>
       <div style="height: 110px;width: 100%;">
-        <div style="width: 10%;float: left;text-align: left">
+        <div id="logo" style="width: 10%;float: left;text-align: left">
           <img src="../../assets/logo.png" style="width: 100px">
         </div>
-        <div style="float: left;padding-top: 60px;text-align: left">
+        <div id="buttons" style="float: left;padding-top: 60px;text-align: left;">
           <ButtonGroup>
             <Button style="display: none"></Button>
             <Button :class="getClass(1)" icon="md-home" @click="getPage(1)">论坛主页</Button>
@@ -14,23 +14,26 @@
             <Button style="display: none"></Button>
           </ButtonGroup>
         </div>
-        <div v-if="login" style="float: right;padding-top: 60px;">
+        <div v-if="login" style="float: right;padding-top: 60px;width: 120px;text-align: right">
           <Avatar :src=avatar_url size="large" />
           <p id="out_frame" style="display: inline" @click="logout"><Icon type="md-exit" size="25" id="out"/><span>登出</span></p>
         </div>
-        <div v-else style="float: right;padding-top: 70px;">
+        <div v-else style="float: right;padding-top: 70px;width: 120px;text-align: right">
           <button class="login" @click="askForFrame('login')">登录</button>
           <button class="login" @click="askForFrame('register')">注册</button>
         </div>
+        <Search style="width: 330px;float: right;margin-top: 70px;margin-right: 10px" v-bind:style="{width:searchWidth+'px'}"></Search>
+
       </div>
       <div style="width: 100%;height: 5px;background-color: #e64919;margin-bottom: 10px"></div>
     </div>
 </template>
 
 <script>
-
+  import Search from './Search'
     export default {
         name: "Menu",
+      components:{Search},
       mounted(){
         var username=sessionStorage.getItem("username")
         if(username==null || username==''){
@@ -50,13 +53,18 @@
             this.avatar_url=sessionStorage.getItem("avatar_url")
           }
         }
+        var window_width=window.innerWidth*0.76
+        var logo_width=$('#logo')[0].offsetWidth
+        var button_width=$('#buttons')[0].offsetWidth
+        this.searchWidth=(window_width-logo_width-button_width-120)-100
       },
       data(){
         return{
           username:'',
           active_index:1,
           avatar_url:'',
-          login:''
+          login:'',
+          searchWidth:''
         }
       },
       methods:{
@@ -118,7 +126,9 @@
           if(path.indexOf('articles')<0&&path.indexOf('detail')<0&&path.indexOf('home')<0){
             this.$router.push('/home')
           }
-          this.$router.go(0)
+          else if(path.indexOf('detail')>=0){
+            this.$router.go(0)
+          }
         }
       },
       props:['frame']

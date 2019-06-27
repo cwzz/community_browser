@@ -13,6 +13,7 @@ import UserFansPage from '@/pages/UserFansPage'
 import UserInfoPage from '@/pages/UserInfoPage'
 import UserMessagePage from "@/pages/UserMessagePage"
 import AuthorInfoPage from '@/pages/AuthorInfoPage'
+import SearchPage from '@/pages/SearchPage'
 Vue.use(Router)
 
 export default new Router({
@@ -77,6 +78,11 @@ export default new Router({
       path:'/author',
       name:'AuthorInfoPage',
       component:AuthorInfoPage
+    },
+    {
+      path:'/search',
+      name:'SearchPage',
+      component:SearchPage
     },
     {
       path:'/test',
