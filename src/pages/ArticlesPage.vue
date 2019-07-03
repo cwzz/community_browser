@@ -36,7 +36,7 @@
             <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
             <td style="width: 4%" v-else><Icon type="md-document" /></td>
             <td style="width: 56%;text-align: left">{{getTitle(article.title)}}</td>
-            <td style="width: 20%">{{article.author}}</td>
+            <td style="width: 20%">{{article.nickname}}</td>
             <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
           </tr>
           <tr>
@@ -115,7 +115,7 @@
             tag_name:'',//标签名称
             articles:[],//在当前标签下的文章
             article_begin:0,//当前页面的文章开始下标
-            show_page_nums:20,//一个页面总共可以显示多少条信息
+            show_page_nums:10,//一个页面总共可以显示多少条信息
             current_page:1//当前是第几页
           }
       },

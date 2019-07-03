@@ -22,7 +22,7 @@
             <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
             <td style="width: 4%" v-else><Icon type="md-document" /></td>
             <td style="width: 56%;text-align: left">{{getTitle(article.title)}}</td>
-            <td style="width: 20%">{{article.author}}</td>
+            <td style="width: 20%">{{article.nickname}}</td>
             <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
           </tr>
           <tr>
@@ -51,6 +51,11 @@
           this.$router.push('/home')
         }
         //然后getArticles
+
+        this.$axios.post('/server/post/searchPost',{email:this.category_name}).then(re=>{
+          this.articles=re.data
+          console.log(re.data)
+        })
       },
       data(){
           return{

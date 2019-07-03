@@ -1,7 +1,7 @@
 <template>
     <div style="height: 30px">
       <input v-model="content" @keypress="press"></input>
-      <button @click="search"><Icon type="ios-search" /> 搜索</button>
+      <button @click="search"><Icon type="ios-search" /> </button>
     </div>
 </template>
 
@@ -25,6 +25,7 @@
               this.$Message.error('搜索的内容不能为空')
             }
             else {
+              sessionStorage.setItem('search_key',this.content)
               this.$router.push('/search')
               this.$router.go(0)
             }
@@ -44,10 +45,12 @@ input{
   background-color: #ffffff;
   border: 1px solid #dcdee6;
   height: 30px;
-  width: 80%;
+  width: 85%;
   float: left;
   padding-left: 5px;
   outline: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 input:focus{
@@ -56,13 +59,15 @@ input:focus{
 
   button{
     float: left;
-    width: 20%;
+    width: 15%;
     height: 30px;
     background-color: #ed4919;
     border: none;
     -webkit-text-fill-color: white;
     font-size: 15px;
     outline: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
   button:hover{
