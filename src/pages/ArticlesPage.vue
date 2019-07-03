@@ -13,7 +13,7 @@
               <tr>
                 <td style="border-right: 2px solid #dcdee2"><button @click="change(0,0)" :class="getClass(0,0)" style="width: 80px">全 部</button></td>
               </tr>
-              <tr v-for="category in values">
+              <tr v-for="category in values" v-loading="isShow" loading-text="正在加载...">
                 <td style="border-right: 2px solid #dcdee2"><button @click="change(category.name,0)" :class="getClass(category.name,0)" style="width: 80px">{{category.name}}</button></td>
                 <button v-for="tag in category.values" @click="change(category.name,tag)" :class="getClass(category.name,tag)">
                   {{tag}}

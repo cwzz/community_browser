@@ -8,30 +8,33 @@
       <div>
         <p>{{category_name}}</p>
       </div>
-      <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">抱歉，暂无关于{{category_name}}的内容</div>
-      <div v-else style="text-align: center;width: 100%;background-color: #f8f8f9;margin-bottom: 5px">
-        <table style="width: 100%" id="article_title">
-          <tr style="width: 100%">
-            <th style="width: 60%">{{category_name}}&nbsp{{tag_name}}</th>
-            <th style="width: 20%">作者</th>
-            <th style="width: 20%">回复/浏览</th>
-          </tr>
-        </table>
-        <table style="width: 100%" id="articles">
-          <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
-            <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
-            <td style="width: 4%" v-else><Icon type="md-document" /></td>
-            <td style="width: 56%;text-align: left">{{getTitle(article.title)}}</td>
-            <td style="width: 20%">{{article.nickname}}</td>
-            <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
-          </tr>
-          <tr>
-            <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
-              <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
-            </td>
-          </tr>
-        </table>
+      <div v-loading="isShow" loading-text="正在加载...">
+        <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">抱歉，暂无关于{{category_name}}的内容</div>
+        <div v-else style="text-align: center;width: 100%;background-color: #f8f8f9;margin-bottom: 5px">
+          <table style="width: 100%" id="article_title">
+            <tr style="width: 100%">
+              <th style="width: 60%">{{category_name}}&nbsp{{tag_name}}</th>
+              <th style="width: 20%">作者</th>
+              <th style="width: 20%">回复/浏览</th>
+            </tr>
+          </table>
+          <table style="width: 100%" id="articles">
+            <tr v-for="(article,index) in articles" @click="chooseArticle(article)" class="page" v-if="canShow(index)">
+              <td style="width: 4%" v-if="article.set_top"><Icon type="md-arrow-round-up" /></td>
+              <td style="width: 4%" v-else><Icon type="md-document" /></td>
+              <td style="width: 56%;text-align: left">{{getTitle(article.title)}}</td>
+              <td style="width: 20%">{{article.nickname}}</td>
+              <td style="width: 20%">{{article.reply}}/{{article.view}}</td>
+            </tr>
+            <tr>
+              <td colspan="4" style="background-color: #f8f8f9;padding: 7px">
+                <Page @on-change="changePage" :current="current_page" :total="this.articles.length/(this.show_page_nums/10)" show-elevator />
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
+
     </div>
   </div>
 </template>

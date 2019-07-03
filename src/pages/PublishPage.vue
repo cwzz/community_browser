@@ -37,10 +37,12 @@
             },
             ruleValidate: {
               title: [
-                { required: true, message: '文章标题不能为空', trigger: 'blur' }
+                { required: true, message: '文章标题不能为空', trigger: 'blur' },
+                { type: 'string', max: 20, message: '文章标题不能超过30个字', trigger: 'blur' }
               ],
               description: [
-                { required: true, message: '文章简介不能为空', trigger: 'blur' }
+                { required: true, message: '文章简介不能为空', trigger: 'blur' },
+                { type: 'string', max: 30, message: '文章简介不能超过40个字', trigger: 'blur' }
               ],
               tag: [
                 { required:true ,type:'array',min:2, message: '请选择文章标签', trigger:'change'}
