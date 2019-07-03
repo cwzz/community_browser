@@ -28,7 +28,7 @@
           <Row>
             <Col span="3">
             <Row style="text-align: center">
-              <img style="width:40px;cursor: pointer" v-bind:data-id="this.author_id" v-bind:src="this.author_photo" @click="jumpToPersonal(author_id)">
+              <img style="width:40px;cursor: pointer;border-radius: 50%" v-bind:data-id="this.author_id" v-bind:src="this.author_photo" @click="jumpToPersonal(author_id)">
             </Row>
             <Row style="text-align: center">
               <span>本文作者</span>
@@ -96,7 +96,7 @@
           <p style="margin-bottom: 15px;color: #4285f4;padding-left: 10px;font-size: 16px">添加回帖内容...</p>
           <div style="margin-bottom: 15px">
             <Row>
-              <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal(user_id)"></Col>
+              <Col span="2"><img style="width:50px;padding-left: 10px;cursor: pointer;border-radius: 50%" v-bind:src="this.user_photo" v-bind:data-id="this.user_id" @click="jumpToPersonal(user_id)"></Col>
               <Col span="22">
               <div id="editor">
                 <editorbar v-model="editor.info" :isClear="isClear"></editorbar>
@@ -120,7 +120,7 @@
             <Card style="margin-bottom:15px">
               <Row>
                 <Col span="2">
-                <img style="width:40px;cursor: pointer;" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal(comment.user_id)">
+                <img style="width:40px;cursor: pointer;border-radius: 50%" v-bind:data-id="comment.user_id" v-bind:src="comment.user_photo" @click="jumpToPersonal(comment.user_id)">
                 </Col>
                 <Col span="20">
                 <Row>
