@@ -3,27 +3,13 @@
     <Login style="position: absolute;z-index: 2" v-if="login.showLogin" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Login>
     <Register style="position: absolute;z-index: 2" v-if="login.showRegister" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Register>
     <Forget style="position: absolute;z-index: 2" v-if="login.showForget" v-bind:close_frame="login.frame" v-on:closeFrame="askLoginOrRegister($event)"></Forget>
-    <div style="background-color: #FFFFFF;padding: 10px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
+    <div style="background-color: #FFFFFF;padding: 10px;min-height: 800px" v-bind:style="{filter:'blur('+login.blur_num+'px)'}">
       <Menu ref="menu" v-bind:frame="login.frame" v-on:showFrame="askLoginOrRegister($event)"></Menu>
       <div>
-        <p>{{category_name}}&nbsp&nbsp{{tag_name}}</p>
-        <div style="height: 150px;background-color: rgb(249,249,249);padding: 10px">
-          <div style="height: 120px;float: left;text-align: left">
-            <table>
-              <tr>
-                <td style="border-right: 2px solid #dcdee2"><button @click="change(0,0)" :class="getClass(0,0)" style="width: 80px">全 部</button></td>
-              </tr>
-              <tr v-for="category in values">
-                <td style="border-right: 2px solid #dcdee2"><button @click="change(category.name,0)" :class="getClass(category.name,0)" style="width: 80px">{{category.name}}</button></td>
-                <button v-for="tag in category.values" @click="change(category.name,tag)" :class="getClass(category.name,tag)">
-                  {{tag}}
-                </button>
-              </tr>
-            </table>
-          </div>
-        </div>
+        <p>{{category_name}}</p>
       </div>
-      <div style="text-align: center;width: 100%;margin-top: 20px;min-height: 500px;background-color: #f8f8f9;margin-bottom: 5px">
+      <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">抱歉，暂无关于{{category_name}}的内容</div>
+      <div v-else style="text-align: center;width: 100%;background-color: #f8f8f9;margin-bottom: 5px">
         <table style="width: 100%" id="article_title">
           <tr style="width: 100%">
             <th style="width: 60%">{{category_name}}&nbsp{{tag_name}}</th>
@@ -56,31 +42,20 @@
   import Register from '../components/user/RegisterPage'
   import Forget from '../components/user/ForgetPage'
     export default {
-        name: "ArticlesPage",
+        name: "SearchPage",
       components:{Menu,Login,Register,Forget},
       mounted(){
         this.$refs.menu.active_index=2
-        if(sessionStorage.getItem("category")!=null && sessionStorage.getItem("category")!=''){
-          this.change(sessionStorage.getItem("category"),sessionStorage.getItem("label"))
-          window.scrollTo(0, 0);
-          document.documentElement.scrollTop = document.body.scrollTop = 0;
-          this.$el.parentNode.scrollTop = 0;
+        this.category_name=sessionStorage.getItem("search_key")
+        if(this.category_name==null){
+          this.$router.push('/home')
         }
-        if(this.category_name=='全部'){
-          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
-            this.articles=re.data
-          })
-        }
-        else if(sessionStorage.getItem("label")==0){
-          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
-            this.articles=re.data
-          })
-        }
-        else{
-          this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
-            this.articles=re.data
-          })
-        }
+        //然后getArticles
+
+        this.$axios.post('/server/post/searchPost',{email:this.category_name}).then(re=>{
+          this.articles=re.data
+          console.log(re.data)
+        })
       },
       data(){
           return{
@@ -93,29 +68,11 @@
             },
             category:0,//类别index
             tag:0,//标签index
-            values:[
-              {
-                name:'法律咨询',
-                values:['信息咨询','求助/讨论','法考/思考','备考经验','政策解读','相关资料','会议讲座','知识产权诉讼','资格证','学习笔记','程序与手续问题','其他实务']
-              },
-              {
-                name:'金融问题',
-                values:['职场经验','行业探讨','行业动态','IP风险管理','IP管理体系','IP部门构建','IP运营','IP保护','商标版权','程序与手续问题','机构探讨','曝光台']
-              },
-              {
-                name:'专利方面',
-                values:['专利保护','专利撰写','专利知识普及','专利转让','专利实物','检索分析','答辩（OA）','复审与无效','程序与手续问题','审查专业问题','文章资料']
-              },
-              {
-                name:'其他问题',
-                values:['征文活动','求职招聘&兼职','求购转让','公告','问题反馈','交友','国外资料','其他IP实务','创意设计']
-              }
-            ],//这就是所有的标签分类数组
-            category_name:'全部',//类别名称
+            category_name:'',//类别名称
             tag_name:'',//标签名称
             articles:[],//在当前标签下的文章
             article_begin:0,//当前页面的文章开始下标
-            show_page_nums:10,//一个页面总共可以显示多少条信息
+            show_page_nums:20,//一个页面总共可以显示多少条信息
             current_page:1//当前是第几页
           }
       },

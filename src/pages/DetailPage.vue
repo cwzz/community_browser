@@ -444,6 +444,9 @@
           this.login.showRegister=false
           this.login.showForget=false
           this.login.blur_num=0
+          if(sessionStorage.getItem("username")!=null && sessionStorage.getItem("username")!=''){
+            this.$router.go(0)
+          }
         }
         this.$refs.menu.getUser()
       }
