@@ -8,7 +8,7 @@
       <div>
         <p>{{category_name}}</p>
       </div>
-      <div v-loading="isShow" loading-text="正在加载...">
+      <div>
         <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">抱歉，暂无关于{{category_name}}的内容</div>
         <div v-else style="text-align: center;width: 100%;background-color: #f8f8f9;margin-bottom: 5px">
           <table style="width: 100%" id="article_title">
