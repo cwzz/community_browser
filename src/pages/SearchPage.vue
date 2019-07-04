@@ -8,7 +8,7 @@
       <div>
         <p>{{category_name}}</p>
       </div>
-      <div>
+      <div v-loading="isShow" loading-text="正在加载...">
         <div v-if="articles.length==0" style="background-color: #f8f8f9;height: 150px;font-size: 15px;text-align: center;padding: 60px">抱歉，暂无关于{{category_name}}的内容</div>
         <div v-else style="text-align: center;width: 100%;background-color: #f8f8f9;margin-bottom: 5px">
           <table style="width: 100%" id="article_title">
@@ -56,12 +56,14 @@
         //然后getArticles
 
         this.$axios.post('/server/post/searchPost',{email:this.category_name}).then(re=>{
-          this.articles=re.data
+          this.articles=re.data;
           console.log(re.data)
+          this.isShow=false;
         })
       },
       data(){
           return{
+            isShow:true,
             login:{
               showLogin:false,
               showRegister:false,
@@ -112,28 +114,32 @@
             this.category_name=category
             this.tag_name=tag
           }
+          this.isShow=false;
           if(this.category_name=='全部'){
             this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
               this.current_page=1
               this.article_begin=0;
+              this.isShow=true;
             })
           }
           else if(this.tag_name==''){
             this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
-              this.articles=re.data
+              this.articles=re.data;
               //改current_page
-              this.current_page=1
+              this.current_page=1;
               this.article_begin=0;
+              this.isShow=true;
             })
           }
           else{
             this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
-              this.articles=re.data
+              this.articles=re.data;
               //改current_page
-              this.current_page=1
+              this.current_page=1;
               this.article_begin=0;
+              this.isShow=true;
             })
           }
         },

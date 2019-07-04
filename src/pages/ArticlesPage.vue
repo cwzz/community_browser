@@ -68,17 +68,20 @@
         }
         if(this.category_name=='全部'){
           this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
-            this.articles=re.data
+            this.articles=re.data;
+            this.isShow=false;
           })
         }
         else if(sessionStorage.getItem("label")==0){
           this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
-            this.articles=re.data
+            this.articles=re.data;
+            this.isShow=false;
           })
         }
         else{
           this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
             this.articles=re.data
+            this.isShow=false;
           })
         }
       },
@@ -91,6 +94,7 @@
               blur_num:0,
               frame:''
             },
+            isShow:true,
             category:0,//类别index
             tag:0,//标签index
             values:[
@@ -137,7 +141,7 @@
           }
         },
         //选择某个新标签
-        change(category,tag){
+        async change(category,tag){
           this.category=category
           this.tag=tag
           if(category==0 && tag==0){
@@ -152,21 +156,24 @@
             this.category_name=category
             this.tag_name=tag
           }
+          this.isShow=true;
           if(this.category_name=='全部'){
-            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
+            await this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
               this.current_page=1
               this.article_begin=0;
-            })
+            });
+            this.isShow=false;
           }
           else if(this.tag_name==''){
-            this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
+            await this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:'全部'}).then(re=>{
               this.articles=re.data
               //改current_page
               this.current_page=1
               this.article_begin=0;
-            })
+            });
+            this.isShow=false;
           }
           else{
             this.$axios.post('/server/post/getArticleList',{category:this.category_name,label:this.tag_name}).then(re=>{
@@ -174,7 +181,8 @@
               //改current_page
               this.current_page=1
               this.article_begin=0;
-            })
+            });
+            this.isShow=false;
           }
         },
         //选择某篇文章，需要页面跳转
