@@ -162,7 +162,7 @@
     },
     async mounted(){
       this.post_id=sessionStorage.getItem("post_detail_id");
-      if(sessionStorage.getItem("username")!=""){
+      if(sessionStorage.getItem("username")!=null&&sessionStorage.getItem("username")!=""){
         this.user_id=sessionStorage.getItem("username");
         await this.$axios.post('/server/C_User/judgeCollect', {
           currentUser: this.user_id,
